@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { getStorageInfo, fetchInfo } from './utility'
+import { getStorageInfo, fetchInfo, downloadVideo } from './utility'
 
 
 const App = () => {
@@ -9,6 +9,12 @@ const App = () => {
   useEffect(() => {
     getStorageInfo(navigator)
     fetchInfo()
+      .then(res => res.items[0].id)
+      .then(downloadVideo)
+      .then(data => console.log('this is what was sent back from downloadVideo =>', data))
+      .catch(error => {
+        console.log('the error that was hit by fetchInfo =>',error)
+      })
   }, [])
 
   return (

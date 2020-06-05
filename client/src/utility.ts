@@ -20,12 +20,24 @@ export const getStorageInfo = async (navigator: Navigator): Promise<void> => {
   }
 }
 
-export const fetchInfo = async (): Promise<void> => {
+
+export const fetchInfo = async () => {
   const endPoint = `${REACT_APP_API_ENDPOINT}&key=${REACT_APP_API_KEY}`
   try{
     const res = await fetch(endPoint).then(data => data.json())
-    console.log('this is the res from fetchInfo =>', res )
+    if(res.error){
+      throw new Error('error from call to api')
+    }
+    return res
   }catch(error){
-    console.log('there has been an error =>', error)
+    throw new Error(error.message)
+  }
+}
+
+export const downloadVideo = async ( id:string ) => {
+  try{
+    return await fetch(`api/videos/${id}`).then(data => data.json())
+  }catch(error){
+    return error
   }
 }
