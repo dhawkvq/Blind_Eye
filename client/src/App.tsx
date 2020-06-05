@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { getStorageInfo, fetchInfo } from './utility'
 
-function App() {
+
+const App = () => {
+
+  useEffect(() => {
+    getStorageInfo(navigator)
+    fetchInfo()
+  }, [])
+
   return (
     <div className="App">
       <header className="App-header">
@@ -23,4 +31,4 @@ function App() {
   );
 }
 
-export default App;
+export default App
