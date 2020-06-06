@@ -2,19 +2,22 @@ import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { getStorageInfo, fetchInfo, downloadVideo } from './utility'
+import PouchDB from 'pouchdb'
 
 
-const App = () => {
+const App = () => {  
+  
+  const db = new PouchDB('kittens')
 
   useEffect(() => {
     getStorageInfo(navigator)
-    fetchInfo()
-      .then(res => res.items[0].id)
-      .then(downloadVideo)
-      .then(data => console.log('this is what was sent back from downloadVideo =>', data))
-      .catch(error => {
-        console.log('the error that was hit by fetchInfo =>',error)
-      })
+    // fetchInfo()
+    //   .then(res => res.items[0].id)
+    //   .then(downloadVideo)
+    //   .then(data => console.log('this is what was sent back from downloadVideo =>', data))
+    //   .catch(error => {
+    //     console.log('the error that was hit by fetchInfo =>',error)
+    //   })
   }, [])
 
   return (
