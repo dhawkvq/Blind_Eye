@@ -34,18 +34,10 @@ export const fetchInfo = async () => {
   }
 }
 
-export const downloadVideo = async ( id:string ) => {
+export const downloadVideo = async (id:string) => {
   try{
-    return await fetch(`api/videos/${id}`).then(data => data.json())
-  }catch(error){
-    return error
-  }
-}
-
-export const grabReadStream = async () => {
-  try{
-    let stream = await fetch('api/stream')
-    if(!stream){
+    let stream = await fetch(`api/stream/${id}`)
+    if(!stream.ok){
       throw new Error('no stream')
     } else if(stream && stream.body){
       const reader = stream.body.getReader();
@@ -74,18 +66,11 @@ export const grabReadStream = async () => {
         console.log(`Received ${receivedLength} of ${contentLength}`)
       }
 
-      let chunksAll = new Uint8Array(receivedLength)
-      let position = 0
-      for(let chunk of chunks) {
-        chunksAll.set(chunk, position)
-        position += chunk.length;
-      }
-
-      return new TextDecoder("utf-8").decode(chunksAll);
+      return new Blob(chunks)
 
     }
   }catch(error){
     console.log('there was an error grabbing ready stream')
-    return error
+    throw new Error(error.message)
   }
 }
