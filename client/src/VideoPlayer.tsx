@@ -1,27 +1,16 @@
 import React, { useRef, useState, useEffect } from 'react'
 import ControlButtons from './ControlButtons';
-import { downloadVideo } from './utility'
 
 
-const VideoPlayer = ({ videoId }) => {
 
-  const [videoBlob, setVideoBlob] = useState(null)
-  const [videoUrl, setVideoUrl] = useState(null)
+const VideoPlayer = ({ video }) => {
+
+  const [videoUrl] = useState(createVideoUrl(video.doc.blob))
   const [vidPlaying, setVidPlaying] = useState(false)
   const vidRef = useRef(null);
-  
-  useEffect(() => {
-    if(videoBlob !== null){
-      console.log('creating videoUrl')
-      const videoUrl = window.URL.createObjectURL(videoBlob)
-      setVideoUrl(videoUrl)
-    }
-  }, [videoBlob])
 
-  const handleDownload = () => {
-    downloadVideo(videoId)
-      .then(setVideoBlob)
-      .catch(error => console.log('there was an error coming back from download video =>', error ))
+  function createVideoUrl(blob:any){
+    return window.URL.createObjectURL(blob)
   }
 
   useEffect(() => {
@@ -41,10 +30,7 @@ const VideoPlayer = ({ videoId }) => {
           </video>
         }
       </div>
-      <ControlButtons 
-        isVideo={videoBlob !== null}
-        {...{videoId, handleDownload, setVidPlaying}}
-      />
+      <ControlButtons {...{setVidPlaying}} />
     </div>
   )
 }

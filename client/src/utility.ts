@@ -1,4 +1,4 @@
-
+import { db } from './App'
 const { REACT_APP_API_ENDPOINT, REACT_APP_API_KEY } = process.env
 
 
@@ -73,4 +73,19 @@ export const downloadVideo = async (id:string) => {
     console.log('there was an error grabbing ready stream')
     throw new Error(error.message)
   }
+}
+
+export const saveVideo = async (blob:any) => {
+  let videoId = blob._id
+  db.put(blob)
+    .then(() => db.get(videoId))
+    .then(res => console.log('this is the object placed in memory =>', res))
+    .catch(error => console.log('there was an error placing or retreiving object =>', error ))
+}
+
+
+export const grabDbItems = async () => {
+  return await db.allDocs({include_docs: true})
+    .then(info => info)
+    .catch(error => error)
 }
