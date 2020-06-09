@@ -19,11 +19,11 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <AppContext>
-          {/* <CurrentVideos />  */}
-          <HotReel />
-        </AppContext> 
       </header>
+      <AppContext>
+        {/* <CurrentVideos />  */}
+        <HotReel />
+      </AppContext> 
     </div>
   );
 }

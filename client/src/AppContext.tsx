@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-// import { fetchInfo } from './utility'
+// import { channelOwnerInfo } from './utility'
 import data from './mock.json'
 
 export const AppCtx = React.createContext()
@@ -11,10 +11,10 @@ const AppContext = (props) => {
   const [hotReel] = useState([...data])
 
   // useEffect(() => {
-  //   fetchInfo()
-  //     .then(res => setHotReel(res.items))
-  //     .catch(error => console.log('there was an error fetching vids =>', error ))
-  // }, [])
+  //   channelOwnerInfo(hotReel)
+  //     .then(res => setHotReel(res))
+  //     .catch(error => console.log('error from setting channelOwnerInfo =>', error ))
+  // }, [hotReel])
 
   return(
     <AppCtx.Provider value={{ savedVideos, hotReel }}>
