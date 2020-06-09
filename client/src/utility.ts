@@ -85,7 +85,7 @@ export const saveVideo = async (blob:any) => {
 
 
 export const grabDbItems = async () => {
-  return await db.allDocs({include_docs: true})
+  return await db.allDocs({ include_docs: true })
     .then(info => info)
     .catch(error => error)
 }
