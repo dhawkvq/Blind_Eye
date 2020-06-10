@@ -1,7 +1,10 @@
 import { db } from './App'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
+import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(duration)
+dayjs.extend(relativeTime)
+
 const { 
   REACT_APP_API_ENDPOINT, 
   REACT_APP_API_KEY, 
@@ -161,3 +164,5 @@ export const formatViewCount = (count) => {
   } 
   return count
 }
+
+export const formatPublishDate = (time) => dayjs(time).fromNow();
