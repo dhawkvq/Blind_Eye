@@ -36,7 +36,7 @@ export const fetchInfo = async () => {
   try{
     const res = await fetch(endPoint).then(data => data.json())
     if(res.error){
-      throw new Error('error from call to api')
+      throw new Error(res.error.message)
     }
     return res
   }catch(error){
@@ -166,3 +166,16 @@ export const formatViewCount = (count) => {
 }
 
 export const formatPublishDate = (time) => dayjs(time).fromNow();
+
+export const filOwnerPic = (channelThumbs) => {
+  return channelThumbs.high ? channelThumbs.high :
+         channelThumbs.medium ? channelThumbs.medium :
+         channelThumbs.default
+}
+
+export const filThumbPic = (thumbnails) => {
+  return thumbnails.maxres ? thumbnails.maxres: 
+         thumbnails.high ? thumbnails.high : 
+         thumbnails.standard ? thumbnails.standard :
+         thumbnails.default
+}
