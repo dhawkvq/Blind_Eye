@@ -1,5 +1,6 @@
 import React from 'react'
 import './videoCard.scss'
+import logo from '../../logo.svg'
 import { 
   formatDuration, 
   formatViewCount, 
@@ -28,13 +29,24 @@ const VideoCard = ({ video }) => {
         <div className='picHousing'>
           <img src={channelOwnerPic.url}  alt='channel owner thumbnail pic'/>
         </div>
-        <div className='videoDetails'>
-          <p id='title'>{video.snippet.title}</p>
-          <p id='chanTitle'>
-            {video.snippet.channelTitle}
-            <span>{viewCount} Views</span>
-            <span id='pubTime'>- {publishTime}</span>
-          </p>
+        <div className='videoDetails' >
+          <div style={{ width:'90%'}}>
+            <p id='title'>{video.snippet.title}</p> 
+            <p id='chanTitle' >
+              {video.snippet.channelTitle}
+              <span>{viewCount} Views</span>
+              <span id='pubTime'>- {publishTime}</span>
+            </p>
+          </div>
+          <div className='toolTip'>
+            <p>Tooltip Text</p>
+            <img 
+              src={logo} 
+              alt='action button'  
+              onClick={() => console.log('the pic has been clicked')}
+              className='iconButton'
+            />
+          </div>
         </div>  
       </div>
     </div>

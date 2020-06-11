@@ -19,7 +19,6 @@ const CurrentVideos = () => {
 
   return (
     <div style={style.wrapper}>
-      <h1>Saved Videos</h1>
       { savedVideos.length > 0 && savedVideos.map((video:any) => (
           <VideoPlayer video={video} key={video.id}/>
         ))

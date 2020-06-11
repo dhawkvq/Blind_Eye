@@ -50,7 +50,7 @@
 
   .videoDetails {
     display: flex; 
-    flex-direction: column; 
+    position: relative;
     width: 80%; 
     align-items: flex-start; 
     color: white; 
@@ -78,5 +78,43 @@
         margin-left: 5px;
       }
     }
+
+    .toolTip{
+      position: relative;
+
+      &:hover{
+        p {
+          visibility: visible;
+        }
+      }
+
+      p{
+        visibility: hidden;
+        position: absolute;
+        left: 50px;
+        font-size: 12px;
+        background-color: grey;
+        border-radius: 5px;
+      }
+
+      .iconButton{
+        height: 50px;
+        width: 50px;
+  
+        &:hover {
+          animation: grow-logo ease forwards .5s;
+        }
+      }
+    }
+
+  }
+}
+
+@keyframes grow-logo {
+  from {
+    transform: scale(1);
+  }
+  to{
+    transform: scale(1.15);
   }
 }
