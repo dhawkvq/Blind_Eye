@@ -1,20 +1,26 @@
-import React, { useState, useEffect } from 'react'
-import { grabDbItems } from './utility'
-import VideoPlayer from './VideoPlayer'
+import React, { useContext } from 'react'
+import { AppCtx } from './AppContext'
+import { VideoPlayer } from './components'
+
+
+const style = {
+  wrapper:{
+    border: '1px dashed limegreen', 
+    minHeight: 200, 
+    minWidth: 200,
+    color: 'white'
+  }
+}
+
 
 const CurrentVideos = () => {
 
-  const [currentVids, setCurrentVids] = useState([])
-
-  useEffect(() => {
-    grabDbItems()
-      .then(res => setCurrentVids(res.rows))
-      .catch(error => console.log('error from call to grabDbItems =>', error ))
-  }, [])
+  const { savedVideos = [] } = useContext(AppCtx)
 
   return (
-    <div style={{ border: '1px dashed limegreen', minHeight: 200, minWidth: 200 }}>
-      { currentVids.length && currentVids.map((video:any) => (
+    <div style={style.wrapper}>
+      <h1>Saved Videos</h1>
+      { savedVideos.length > 0 && savedVideos.map((video:any) => (
           <VideoPlayer video={video} key={video.id}/>
         ))
       }

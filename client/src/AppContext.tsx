@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 // import { fetchInfo ,channelOwnerInfo } from './utility'
+import { grabDbItems } from './utility'
 import data from './mock.json'
 
 export const AppCtx = React.createContext()
@@ -7,7 +8,7 @@ export const AppCtx = React.createContext()
 
 const AppContext = (props) => {
   
-  const [savedVideos] = useState([])
+  const [savedVideos, setSavedVids] = useState([])
   const [hotReel, setHotReel] = useState([...data])
   // const [nextPage, setNextPage] = useState('')
 
@@ -20,6 +21,12 @@ const AppContext = (props) => {
   //     .then(res => setHotReel(res))
   //     .catch(error => console.log('error from setting channelOwnerInfo =>', error ))
   // }, [hotReel])
+
+  useEffect(() => {
+    grabDbItems()
+      .then(res => setSavedVids(res.rows))
+      .catch(error => console.log('error from call to grabDbItems =>', error ))
+  }, [])
 
   return(
     <AppCtx.Provider value={{ savedVideos, hotReel, setHotReel }}>
