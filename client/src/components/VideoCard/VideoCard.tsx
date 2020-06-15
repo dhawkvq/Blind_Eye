@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './videoCard.scss'
 import logo from '../../logo.svg'
 import { 
@@ -10,6 +10,8 @@ import {
 } from './utility'
 
 const VideoCard = ({ video }) => {
+
+  const [isActive, setIsActive] = useState(false)
 
   let { channelThumbs, snippet: { thumbnails, publishedAt }} = video
 
@@ -35,17 +37,21 @@ const VideoCard = ({ video }) => {
             <p id='chanTitle' >
               {video.snippet.channelTitle}
               <span>{viewCount} Views</span>
-              <span id='pubTime'>- {publishTime}</span>
+              <span id='pubTime'>- {publishTime}</span> 
             </p>
           </div>
-          <div className='toolTip'>
-            <p>Tooltip Text</p>
+          <div className={ isActive ? 'toolTipActive': 'toolTip'}>
+            <p id='tooltipText'>Tooltip Text</p>
             <img 
               src={logo} 
               alt='action button'  
-              onClick={() => console.log('the pic has been clicked')}
-              className='iconButton'
+              onClick={() => setIsActive(!isActive)}
+              className={isActive ? 'iconButtonActive': 'iconButton'}
             />
+            <ul className='menu'>
+              <li>Watch Later</li>
+              <li>Download</li>
+            </ul>
           </div>
         </div>  
       </div>

@@ -1,3 +1,5 @@
+@import '../../variables.scss';
+
 .cardWrapper {
   display: flex; 
   flex-direction: column;
@@ -7,6 +9,12 @@
   
   .picCont {
    position: relative;
+   transition: all 1s ease;
+
+  &:hover{
+   transform: scale(1.015);
+   cursor: pointer;
+  }
 
     img {
       border-radius: 10px 10px 0 0;
@@ -18,7 +26,7 @@
       position: absolute; 
       right: 10px;
       bottom: -10px; 
-      background-color: #323947; 
+      background-color: $primary_color; 
       color: white; 
       padding: 5px 10px; 
       border-radius: 5px;  
@@ -83,38 +91,79 @@
       position: relative;
 
       &:hover{
-        p {
+        cursor: pointer;
+        
+        #tooltipText {
           visibility: visible;
         }
       }
 
-      p{
+      .menu {
+        visibility: hidden;
+        position: absolute; 
+        left: -35px;  
+        list-style: none;
+        z-index: 1; 
+        width: 100px; 
+        margin: 0px; 
+        padding: 10px; 
+        background: $primary_color;
+        border: 2px solid darken($primary-color, 7%);
+        border-radius: 5px;
+        
+        li {
+          margin: 3px 0; 
+          padding: 2px;
+
+          &:hover {
+            background: lighten($primary_color, 8%);
+          }
+        }
+      }
+
+      #tooltipText{
         visibility: hidden;
         position: absolute;
         left: 50px;
         font-size: 12px;
         background-color: grey;
         border-radius: 5px;
+        transition: visibility ease 1s;
+        transition-delay: .5s;
       }
 
       .iconButton{
         height: 50px;
         width: 50px;
-  
+        transition: all .5s ease;
+
         &:hover {
-          animation: grow-logo ease forwards .5s;
+          transform: scale(1.15);
+        }
+
+      }
+
+      .iconButtonActive{
+        height: 50px;
+        width: 50px;
+        transition: all .5s ease;
+        transform: scale(1.15) rotate(90deg);
+      }
+    }
+    
+    .toolTipActive{
+      @extend .toolTip;
+      
+      .menu {
+        visibility: visible;
+      }
+
+      &:hover{
+        #tooltipText {
+          visibility: hidden;
         }
       }
     }
 
-  }
-}
-
-@keyframes grow-logo {
-  from {
-    transform: scale(1);
-  }
-  to{
-    transform: scale(1.15);
   }
 }
