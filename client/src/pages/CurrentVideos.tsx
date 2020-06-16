@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
-import { AppCtx } from './AppContext'
-import { VideoPlayer } from './components'
+import { AppCtx } from '../AppContext'
+import { VideoPlayer } from '../components'
 
 
 const style = {
