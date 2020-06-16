@@ -125,11 +125,11 @@
         visibility: hidden;
         position: absolute;
         left: 50px;
+        top: -20px;
+        padding: 5px;
         font-size: 12px;
         background-color: grey;
         border-radius: 5px;
-        transition: visibility ease 1s;
-        transition-delay: .5s;
       }
 
       .iconButton{

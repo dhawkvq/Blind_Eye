@@ -9,7 +9,8 @@ import {
   filThumbPic 
 } from './utility'
 
-const VideoCard = ({ video }) => {
+
+const VideoCard = ({ video, setWatchLater, ...props }) => {
 
   const [isActive, setIsActive] = useState(false)
 
@@ -20,6 +21,19 @@ const VideoCard = ({ video }) => {
   let vidTime = formatDuration(video.contentDetails.duration)
   let viewCount = formatViewCount(video.statistics.viewCount) 
   let publishTime = formatPublishDate(publishedAt)
+
+  const saveForLater = () => {
+    setWatchLater(prevState => {
+      if(prevState.find(item => item.id === video.id)){
+        return prevState
+      }
+      return [...prevState, video]
+    })
+  }
+
+  const removeVid = () => {
+    setWatchLater(prevState => prevState.filter(vid => vid.id !== video.id))
+  }
 
   return(
     <div key={video.id} className='cardWrapper'>
@@ -41,7 +55,7 @@ const VideoCard = ({ video }) => {
             </p>
           </div>
           <div className={ isActive ? 'toolTipActive': 'toolTip'}>
-            <p id='tooltipText'>Tooltip Text</p>
+            <p id='tooltipText'>Menu</p>
             <img 
               src={logo} 
               alt='action button'  
@@ -49,7 +63,11 @@ const VideoCard = ({ video }) => {
               className={isActive ? 'iconButtonActive': 'iconButton'}
             />
             <ul className='menu'>
-              <li>Watch Later</li>
+              { props.watchLater ?
+                  <li onClick={removeVid}>Remove from watch later</li>
+                :
+                  <li onClick={saveForLater}>Watch Later</li>
+              }
               <li>Download</li>
             </ul>
           </div>

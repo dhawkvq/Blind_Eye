@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 // import { fetchInfo ,channelOwnerInfo } from './utility'
 import { grabDbItems } from './utility'
-import data from './mock.json'
+import { popularList } from './mock_data'
 
 export const AppCtx = React.createContext()
 
@@ -9,7 +9,8 @@ export const AppCtx = React.createContext()
 const AppContext = (props) => {
   
   const [savedVideos, setSavedVids] = useState([])
-  const [hotReel, setHotReel] = useState([...data])
+  const [hotReel, setHotReel] = useState([...popularList])
+  const [watchLater, setWatchLater] = useState([])
   // const [nextPage, setNextPage] = useState('')
 
   // useEffect(() => {
@@ -29,7 +30,7 @@ const AppContext = (props) => {
   }, [])
 
   return(
-    <AppCtx.Provider value={{ savedVideos, hotReel, setHotReel }}>
+    <AppCtx.Provider value={{ savedVideos, hotReel, setHotReel, watchLater, setWatchLater }}>
       { props.children }
     </AppCtx.Provider>
   )

@@ -7,7 +7,7 @@ dayjs.extend(relativeTime)
 export const formatDuration = (time) => {
   let formatted = dayjs.duration(time)
   let { hours, minutes, seconds } = formatted['$d']
-  if(+seconds < 2){
+  if(+seconds < 10){
     seconds = `0${seconds}`
   }
   if(+hours > 0){
