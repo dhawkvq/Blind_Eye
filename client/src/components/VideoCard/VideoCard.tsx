@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import './videoCard.scss'
 import logo from '../../logo.svg'
-import { 
-  formatDuration, 
-  formatViewCount, 
-  formatPublishDate, 
-  filOwnerPic,
-  filThumbPic,
-  storeInDB 
-} from './utility'
+import { storeInDB, formatVideo } from './utility'
+
 
 
 const VideoCard = ({ video, setWatchLater, ...props }) => {
@@ -28,13 +22,6 @@ const VideoCard = ({ video, setWatchLater, ...props }) => {
     }
   }, [videoAdded, vidError])
 
-  let { channelThumbs, snippet: { thumbnails, publishedAt }} = video
-
-  let thumbnailPic = filThumbPic(thumbnails)
-  let channelOwnerPic = filOwnerPic(channelThumbs) 
-  let vidTime = formatDuration(video.contentDetails.duration)
-  let viewCount = formatViewCount(video.statistics.viewCount) 
-  let publishTime = formatPublishDate(publishedAt)
 
   const saveForLater = () => {
 
@@ -57,6 +44,8 @@ const VideoCard = ({ video, setWatchLater, ...props }) => {
                     vidError ? 'notification--error' :
                     'notification'
 
+  const { thumbnailPic, channelOwnerPic, vidTime, viewCount, publishTime } = formatVideo(video)
+                    
   return(
     <div key={video.id} className='cardWrapper'>
       <div className='picCont'>

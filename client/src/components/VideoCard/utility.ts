@@ -82,3 +82,15 @@ export const storeInDB = ({ videoId, channelId }) => {
   return WLDB.put(vidForLater)
     .catch(error => { throw error })
 }
+
+export const formatVideo = (video) => {
+
+  let { channelThumbs, snippet: { thumbnails, publishedAt }} = video
+  return {
+    thumbnailPic: filThumbPic(thumbnails),
+    channelOwnerPic: filOwnerPic(channelThumbs) ,
+    vidTime: formatDuration(video.contentDetails.duration),
+    viewCount: formatViewCount(video.statistics.viewCount) ,
+    publishTime: formatPublishDate(publishedAt)
+  }
+}
