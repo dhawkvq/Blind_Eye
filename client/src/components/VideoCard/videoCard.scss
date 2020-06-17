@@ -11,6 +11,7 @@
    position: relative;
    transition: all 1s ease;
 
+
   &:hover{
    transform: scale(1.015);
    cursor: pointer;
@@ -31,6 +32,32 @@
       padding: 5px 10px; 
       border-radius: 5px;  
       border: 2px solid #1E2425;
+    }
+
+    .notification{
+      visibility: hidden;
+      background-color: $primary-color;
+      border-radius: 3px;
+      position: absolute;
+      color: white;
+      bottom: 10px;
+      left: 10px;
+      width: 200px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &--active{
+        @extend .notification;
+        visibility: visible;
+      }
+      
+      &--error{
+        @extend .notification;
+        visibility: visible;
+        background-color: red;
+      }
     }
   }
 }

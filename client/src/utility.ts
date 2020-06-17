@@ -1,4 +1,4 @@
-import { db } from './App'
+import { db } from './config'
 
 const { 
   REACT_APP_API_ENDPOINT, 

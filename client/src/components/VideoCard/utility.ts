@@ -1,8 +1,10 @@
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { WLDB } from '../../config'
 dayjs.extend(duration)
 dayjs.extend(relativeTime)
+
 
 export const formatDuration = (time) => {
   let formatted = dayjs.duration(time)
@@ -52,4 +54,31 @@ export const filThumbPic = (thumbnails) => {
          thumbnails.high ? thumbnails.high : 
          thumbnails.standard ? thumbnails.standard :
          thumbnails.default
+}
+
+const createDuration = (day) => {
+  return dayjs.duration({
+    seconds: day['$s'],
+    minutes: day['$m'],
+    hours: day['$H'],
+    days: day['$D'],
+    weeks: day['$W'],
+    months: day['$M'],
+    years: day['$y']
+  })
+  .toISOString()
+}
+
+
+export const storeInDB = ({ videoId, channelId }) => {
+
+  const currentDay = dayjs()
+  const vidForLater = {
+    _id: videoId,
+    channelId,
+    save_date: createDuration(currentDay) 
+  }
+
+  return WLDB.put(vidForLater)
+    .catch(error => { throw error })
 }

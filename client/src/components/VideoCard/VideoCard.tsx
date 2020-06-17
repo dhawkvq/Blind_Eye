@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './videoCard.scss'
 import logo from '../../logo.svg'
 import { 
@@ -6,13 +6,27 @@ import {
   formatViewCount, 
   formatPublishDate, 
   filOwnerPic,
-  filThumbPic 
+  filThumbPic,
+  storeInDB 
 } from './utility'
 
 
 const VideoCard = ({ video, setWatchLater, ...props }) => {
 
   const [isActive, setIsActive] = useState(false)
+  const [videoAdded, setVideoAdded] = useState('')
+  const [vidError, setVidError] = useState('')
+
+  useEffect(() => {
+    if(videoAdded){
+      const vidAddTimer = setTimeout(() => setVideoAdded(''), 1500);
+      return () => clearTimeout(vidAddTimer)
+    }
+    if(vidError){
+      const vidErrTimer = setTimeout(() => setVidError(''), 1500);
+      return () => clearTimeout(vidErrTimer)
+    }
+  }, [videoAdded, vidError])
 
   let { channelThumbs, snippet: { thumbnails, publishedAt }} = video
 
@@ -23,22 +37,31 @@ const VideoCard = ({ video, setWatchLater, ...props }) => {
   let publishTime = formatPublishDate(publishedAt)
 
   const saveForLater = () => {
-    setWatchLater(prevState => {
-      if(prevState.find(item => item.id === video.id)){
-        return prevState
-      }
-      return [...prevState, video]
+
+    storeInDB({ 
+      videoId: video.id, 
+      channelId: video.snippet.channelId
     })
+    .then(() => setVideoAdded('Video Added!'))
+    .catch(error => setVidError(error.message))
+
+    setIsActive(false)
   }
 
   const removeVid = () => {
     setWatchLater(prevState => prevState.filter(vid => vid.id !== video.id))
+    setIsActive(false)
   }
+
+  let notifStyles = videoAdded ? 'notification--active': 
+                    vidError ? 'notification--error' :
+                    'notification'
 
   return(
     <div key={video.id} className='cardWrapper'>
       <div className='picCont'>
         <img src={thumbnailPic.url} alt='video thumbnail pic' />
+        <span className={notifStyles}>{vidError||videoAdded}</span>
         <p>{vidTime}</p>
       </div>
       <div className='detailBar'>
