@@ -6,8 +6,14 @@ import { VideoCard } from '../components'
 
 const HotReel = () => {
 
-  let { hotReel = [], setHotReel, setWatchLater } = useContext(AppCtx)
+  const { 
+    hotReel = [], 
+    setHotReel, 
+    setWatchLater, 
+    updateWatchLater 
+  } = useContext(AppCtx)
 
+  
   useEffect(() => {
 
     const handleScroll = () => {
@@ -25,7 +31,14 @@ const HotReel = () => {
 
   return (
     <div className='wrapper'>
-      { hotReel.length > 0 && hotReel.map(video => <VideoCard key={video.id} {...{video, setWatchLater}}/> )} 
+      { hotReel.length > 0 && 
+          hotReel.map(video => 
+            <VideoCard 
+              key={video.id} 
+              {...{video, setWatchLater, updateWatchLater}}
+            /> 
+          )
+      } 
     </div>
   )
 }

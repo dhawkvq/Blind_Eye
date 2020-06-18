@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 // import { fetchInfo ,channelOwnerInfo } from './utility'
-import { grabDbItems } from './utility'
+import { grabDbItems, grabWlItems, multiVidInfo } from './utility'
 import { popularList } from './mock_data'
 
 export const AppCtx = React.createContext()
@@ -27,10 +27,26 @@ const AppContext = (props) => {
     grabDbItems()
       .then(res => setSavedVids(res.rows))
       .catch(error => console.log('error from call to grabDbItems =>', error ))
+
+    grabWlItems()
+      .then(setWatchLater)  
+      .catch(error => console.log('error from grabWlItems =>', error ))
   }, [])
 
+  const updateWatchLater = (info) => {
+    multiVidInfo([info])
+      .then(data => setWatchLater(prevState => [...prevState, ...data]))
+      .catch(error => console.log('error updating watch later =>', error ))
+  }
+
   return(
-    <AppCtx.Provider value={{ savedVideos, hotReel, setHotReel, watchLater, setWatchLater }}>
+    <AppCtx.Provider 
+      value={{ 
+        savedVideos, hotReel, 
+        setHotReel, watchLater, 
+        setWatchLater, updateWatchLater 
+      }}
+    >
       { props.children }
     </AppCtx.Provider>
   )

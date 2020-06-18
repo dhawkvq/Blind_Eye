@@ -5,7 +5,7 @@ import { storeInDB, formatVideo } from './utility'
 
 
 
-const VideoCard = ({ video, setWatchLater, ...props }) => {
+const VideoCard = ({ video, setWatchLater, updateWatchLater, ...props }) => {
 
   const [isActive, setIsActive] = useState(false)
   const [videoAdded, setVideoAdded] = useState('')
@@ -29,7 +29,10 @@ const VideoCard = ({ video, setWatchLater, ...props }) => {
       videoId: video.id, 
       channelId: video.snippet.channelId
     })
-    .then(() => setVideoAdded('Video Added!'))
+    .then(data => {
+      setVideoAdded('Video Added!')
+      updateWatchLater(data)
+    })
     .catch(error => setVidError(error.message))
 
     setIsActive(false)

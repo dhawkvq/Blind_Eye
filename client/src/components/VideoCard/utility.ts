@@ -70,7 +70,7 @@ const createDuration = (day) => {
 }
 
 
-export const storeInDB = ({ videoId, channelId }) => {
+export const storeInDB = async ({ videoId, channelId }) => {
 
   const currentDay = dayjs()
   const vidForLater = {
@@ -79,8 +79,12 @@ export const storeInDB = ({ videoId, channelId }) => {
     save_date: createDuration(currentDay) 
   }
 
-  return WLDB.put(vidForLater)
-    .catch(error => { throw error })
+  try {
+    return await WLDB.put(vidForLater)
+  } 
+  catch (error) {
+    throw error
+  }
 }
 
 export const formatVideo = (video) => {
