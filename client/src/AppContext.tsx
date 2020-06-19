@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react'
 // import { fetchInfo ,channelOwnerInfo } from './utility'
-import { grabDbItems, grabWlItems, multiVidInfo } from './utility'
+import { 
+  grabDbItems, 
+  grabWlItems, 
+  multiVidInfo, 
+  distillVidInfo, 
+  Video,
+  Row 
+} from './utility'
 import { popularList } from './mock_data'
 
 export const AppCtx = React.createContext()
@@ -9,8 +16,8 @@ export const AppCtx = React.createContext()
 const AppContext = (props) => {
   
   const [savedVideos, setSavedVids] = useState([])
-  const [hotReel, setHotReel] = useState([...popularList])
-  const [watchLater, setWatchLater] = useState([])
+  const [hotReel, setHotReel] = useState<Video[]>([...distillVidInfo(popularList)])
+  const [watchLater, setWatchLater] = useState<Video[]>([])
   // const [nextPage, setNextPage] = useState('')
 
   // useEffect(() => {
@@ -33,7 +40,7 @@ const AppContext = (props) => {
       .catch(error => console.log('error from grabWlItems =>', error ))
   }, [])
 
-  const updateWatchLater = (info) => {
+  const updateWatchLater = (info: Row) => {
     multiVidInfo([info])
       .then(data => setWatchLater(prevState => [...prevState, ...data]))
       .catch(error => console.log('error updating watch later =>', error ))

@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import './hotReel.scss'
 import { AppCtx } from '../AppContext'
 import { VideoCard } from '../components'
+import { Video } from '../utility'
 
 
 const HotReel = () => {
@@ -32,7 +33,7 @@ const HotReel = () => {
   return (
     <div className='wrapper'>
       { hotReel.length > 0 && 
-          hotReel.map(video => 
+          hotReel.map((video: Video) => 
             <VideoCard 
               key={video.id} 
               {...{video, setWatchLater, updateWatchLater}}

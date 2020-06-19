@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import './videoCard.scss'
 import logo from '../../logo.svg'
-import { storeInDB, formatVideo } from './utility'
+import { storeInDB } from './utility'
+import { VidCardProps } from './typeDefs'
 
 
+const VideoCard = ({ video, setWatchLater, updateWatchLater, watchLater }: VidCardProps ) => {
 
-const VideoCard = ({ video, setWatchLater, updateWatchLater, ...props }) => {
-
-  const [isActive, setIsActive] = useState(false)
-  const [videoAdded, setVideoAdded] = useState('')
-  const [vidError, setVidError] = useState('')
+  const [isActive, setIsActive] = useState<boolean>(false)
+  const [videoAdded, setVideoAdded] = useState<string>('')
+  const [vidError, setVidError] = useState<string>('')
 
   useEffect(() => {
     if(videoAdded){
@@ -23,11 +23,11 @@ const VideoCard = ({ video, setWatchLater, updateWatchLater, ...props }) => {
   }, [videoAdded, vidError])
 
 
-  const saveForLater = () => {
+  const saveForLater = () => { 
 
     storeInDB({ 
       videoId: video.id, 
-      channelId: video.snippet.channelId
+      channelId: video.channelId
     })
     .then(data => {
       setVideoAdded('Video Added!')
@@ -35,7 +35,7 @@ const VideoCard = ({ video, setWatchLater, updateWatchLater, ...props }) => {
     })
     .catch(error => setVidError(error.message))
 
-    setIsActive(false)
+    setIsActive(false) 
   }
 
   const removeVid = () => {
@@ -47,7 +47,7 @@ const VideoCard = ({ video, setWatchLater, updateWatchLater, ...props }) => {
                     vidError ? 'notification--error' :
                     'notification'
 
-  const { thumbnailPic, channelOwnerPic, vidTime, viewCount, publishTime } = formatVideo(video)
+  const { title, channelTitle, thumbnailPic, channelOwnerPic, vidTime, viewCount, publishTime } = video
                     
   return(
     <div key={video.id} className='cardWrapper'>
@@ -62,9 +62,9 @@ const VideoCard = ({ video, setWatchLater, updateWatchLater, ...props }) => {
         </div>
         <div className='videoDetails' >
           <div style={{ width:'90%'}}>
-            <p id='title'>{video.snippet.title}</p> 
+            <p id='title'>{title}</p> 
             <p id='chanTitle' >
-              {video.snippet.channelTitle}
+              {channelTitle}
               <span>{viewCount} Views</span>
               <span id='pubTime'>- {publishTime}</span> 
             </p>
@@ -78,7 +78,7 @@ const VideoCard = ({ video, setWatchLater, updateWatchLater, ...props }) => {
               className={isActive ? 'iconButtonActive': 'iconButton'}
             />
             <ul className='menu'>
-              { props.watchLater ?
+              { watchLater ?
                   <li onClick={removeVid}>Remove from watch later</li>
                 :
                   <li onClick={saveForLater}>Watch Later</li>
