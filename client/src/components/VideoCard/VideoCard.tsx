@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './videoCard.scss'
 import logo from '../../logo.svg'
-import { storeInDB } from './utility'
+import { storeInDB, deleteFromDB } from './utility'
 import { VidCardProps } from './typeDefs'
 
 
@@ -39,8 +39,11 @@ const VideoCard = ({ video, setWatchLater, updateWatchLater, watchLater }: VidCa
   }
 
   const removeVid = () => {
-    setWatchLater(prevState => prevState.filter(vid => vid.id !== video.id))
-    setIsActive(false)
+    deleteFromDB(video.id)
+      .then(() => 
+        setWatchLater(prevState => prevState.filter(({ id }) => id !== video.id ))
+      )
+      .catch(error => console.log('the error from deleteFromDB =>', error ))
   }
 
   let notifStyles = videoAdded ? 'notification--active': 

@@ -34,3 +34,19 @@ export const storeInDB = async ({ videoId, channelId }: storeDbParams ) => {
     throw error
   }
 }
+
+export const deleteFromDB = async (id: string) => {
+  try{
+    const doc = await WLDB.get(id)
+
+    try {
+      await WLDB.remove(doc)
+    } 
+    catch (error) {
+      throw error
+    }
+  }
+  catch(error){
+    throw error
+  }
+}
