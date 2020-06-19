@@ -1,4 +1,19 @@
-import { db, WLDB } from './config'
+import { db, WLDB } from '../config'
+import {
+  Action, 
+  Row, 
+  Resolutions, 
+  VidWithThumbs,
+  RawVidInfo, 
+  FormattedVideo, 
+  Thumbnail, 
+  ChanOwnerRes 
+} from './typeDefs'
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
+import relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.extend(duration)
+dayjs.extend(relativeTime)
 
 const { 
   REACT_APP_API_ENDPOINT, 
@@ -8,7 +23,8 @@ const {
 } = process.env
 
 
-const createEndpoint = (action) => {
+
+const createEndpoint = (action: Action) => {
   switch(action.type){
 
     case 'POPULAR':
@@ -26,7 +42,7 @@ const createEndpoint = (action) => {
 }
 
 
-export const getStorageInfo = async (navigator: Navigator): Promise<void> => {
+export const getStorageInfo = async (navigator: Navigator) => {
   if (navigator.storage && navigator.storage.estimate) {
     try {
       const { usage, quota } = await navigator.storage.estimate();
@@ -40,6 +56,91 @@ export const getStorageInfo = async (navigator: Navigator): Promise<void> => {
       console.log('there was an error from getDbInfo =>', error )
     }  
   }
+}
+
+export const formatDuration = (time: string) => {
+  let formatted = dayjs.duration(time)
+  let { hours, minutes, seconds } = formatted['$d']
+  if(+seconds < 10){
+    seconds = `0${seconds}`
+  }
+  if(+hours > 0){
+    return `${hours}:${minutes}:${seconds}`
+  }
+  return `${minutes}:${seconds}`
+}
+
+export const formatViewCount = (count: string) => {
+  if(count.length > 6){
+    const mil = count[0]
+    const thou = count[1]
+    if(+thou > 0){
+      return `${mil}.${thou}M`;
+    }
+    return `${mil}M`;
+  }
+  if(count.length === 6 ){
+    return `${count.slice(0,3)}K`
+  }
+  if(count.length === 5){
+    const firstTwo = count.slice(0,2)
+    const third = count.slice(2,3) 
+    if(+third > 0){
+      return `${firstTwo}.${third}K`
+    }
+    return `${firstTwo}K`
+  } 
+  return count
+}
+
+export const formatPublishDate = (time: string) => dayjs(time).fromNow();
+
+export const filOwnerPic = (channelThumbs : Resolutions ): Thumbnail => {
+  return channelThumbs.high ? channelThumbs.high :
+         channelThumbs.medium ? channelThumbs.medium :
+         channelThumbs.default
+}
+
+export const filThumbPic = (thumbnails: Resolutions ): Thumbnail => {
+  return thumbnails.maxres ? thumbnails.maxres: 
+         thumbnails.high ? thumbnails.high : 
+         thumbnails.standard ? thumbnails.standard :
+         thumbnails.default
+}
+
+
+
+export const distillVidInfo = (videos: VidWithThumbs[]): FormattedVideo[] => {
+
+  return videos.map(video => { 
+
+    const { 
+      channelThumbs, 
+      snippet: { 
+        thumbnails, 
+        publishedAt, 
+        title, 
+        channelTitle, 
+        channelId 
+      },
+      contentDetails : { duration },
+      statistics: { viewCount }
+    } = video
+    
+    return {
+      id: video.id,
+      title,
+      channelId,
+      channelTitle,
+      thumbnailPic: filThumbPic(thumbnails),
+      channelOwnerPic: filOwnerPic(channelThumbs) ,
+      vidTime: formatDuration(duration),
+      viewCount: formatViewCount(viewCount) ,
+      publishTime: formatPublishDate(publishedAt)
+    }
+
+  })
+
 }
 
 
@@ -95,18 +196,9 @@ export const downloadVideo = async (id:string) => {
   }
 }
 
-export const saveVideo = async (blob:any) => {
-  try {
-    await db.put(blob)
-  } 
-  catch (error) {
-    console.log('there was an error saving video =>', error )
-  }
-}
+export const multiVidInfo = async ( saved: Row[] ) => {
 
-export const multiVidInfo = async (saved) => {
-
-  const videoIds = saved.reduce((acc,curVal) => {
+  const videoIds = saved.reduce((acc:string[],curVal) => {
     return acc = [...acc,curVal.id]
   },[])
 
@@ -143,7 +235,6 @@ export const grabDbItems = async () => {
 export const grabWlItems = async () => {
   try{
     const info = await WLDB.allDocs({ include_docs: true })
-
     try{
       return await multiVidInfo(info.rows)
     }
@@ -156,9 +247,9 @@ export const grabWlItems = async () => {
   }
 }
 
-export const channelOwnerInfo = async (incoming) => {
+export const channelOwnerInfo = async (incoming: RawVidInfo[]) => {
 
-  let channelIds = incoming.reduce((acc,curVal) => {
+  const channelIds = incoming.reduce((acc: string[],curVal) => {
     return acc = [...acc,curVal.snippet.channelId]
   },[])
 
@@ -167,21 +258,23 @@ export const channelOwnerInfo = async (incoming) => {
 
     if(!first.ok) throw new Error('problem retrieving specific channels from ids')
 
-    const { items } = await first.json()
+    const { items } : { items: ChanOwnerRes[] } = await first.json()
     if(!items) throw new Error('items came back empty')
+
 
     const reduced = items.reduce((acc,curVal) => {
       acc[curVal.id] = curVal.snippet.thumbnails
       return acc
     },{})
 
-    const transformedItems = incoming.map(item => {
-      let itemId = item.snippet.channelId 
-      item['channelThumbs'] = reduced[itemId]
-      return item
-    })
+    const transformedItems = incoming.reduce((acc: VidWithThumbs[] ,curVal) => {
+      let itemId = curVal.snippet.channelId 
+      let thumbs = reduced[itemId]
+      return acc = [...acc, {...curVal, channelThumbs: thumbs}]
+    },[])
 
-    return transformedItems
+    return distillVidInfo(transformedItems)
+
 
   }catch(error){
     throw error
