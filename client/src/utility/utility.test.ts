@@ -1,4 +1,9 @@
-import { createEndpoint,formatDuration } from './utility'
+import { createEndpoint, formatDuration, formatViewCount, formatPublishDate } from './utility'
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
+import relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.extend(duration)
+dayjs.extend(relativeTime)
 
 describe('createEndpoint', () => {
   test('returns a string', () => {
@@ -41,5 +46,49 @@ describe('formatDuration', () => {
   test('returns error if no arg is passed', () => {
     expect(() => formatDuration())
       .toThrow('time arg is required')
+  })
+
+  test('returns a string when called with proper arg', () => {
+    expect(formatDuration("PT2M7S")).toEqual(expect.any(String))
+  })
+})
+
+describe('formatViewCount', () => {
+  test('throw error if arg is not passed to formatViewCount', () => {
+    expect(() => formatViewCount())
+      .toThrow('count arg of type string required')
+  })
+
+  test('returns error if type string is not passed to formatViewCount', () => {
+    expect(() => formatViewCount(10))
+      .toThrow('arg count must be of type string')
+  })
+
+  test('returns a string when called with proper arg', () => {
+    expect(formatViewCount("1000")).toEqual(expect.any(String))
+  })
+
+})
+
+describe('formatPublishDate', () => {
+  const sampleDate = "2020-06-15T17:00:09Z"
+  const properOutput = dayjs(sampleDate).fromNow()
+  test('pass it proper arg it will give back a proper output', () => {
+    expect(formatPublishDate(sampleDate)).toEqual(properOutput)
+  })
+
+  test('to throw error when date string passed is not valid', () => {
+    expect(() => formatPublishDate('yes'))
+      .toThrow('time passed was not a valid date time')
+  })
+
+  test('to throw error if no arg is passed', () => {
+    expect(() => formatPublishDate())
+      .toThrow('time arg of type string required')
+  })
+
+  test('to throw error if arg passed is not of type string', () => {
+    expect(() => formatPublishDate(10))
+      .toThrow('time arg must be of type string')
   })
 })

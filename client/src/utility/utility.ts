@@ -88,7 +88,11 @@ export const formatDuration = (time: string): string => {
 }
 
 
-export const formatViewCount = (count: string) => {
+export const formatViewCount = (count: string): string => {
+
+  if(!count) throw new Error('count arg of type string required')
+  if(typeof(count) !== 'string') throw new Error('arg count must be of type string')
+
   if(count.length > 6){
     const mil = count[0]
     const thou = count[1]
@@ -111,7 +115,15 @@ export const formatViewCount = (count: string) => {
   return count
 }
 
-export const formatPublishDate = (time: string) => dayjs(time).fromNow();
+export const formatPublishDate = (time: string): string => {
+
+  if(!time) throw new Error('time arg of type string required')
+  if(typeof(time) !== 'string') throw new Error('time arg must be of type string')
+
+  const validDate = dayjs(time).isValid()
+  if(!validDate) throw new Error('time passed was not a valid date time')
+  return dayjs(time).fromNow()
+} 
 
 export const filOwnerPic = (channelThumbs : Resolutions ): Thumbnail => {
   return channelThumbs.high ? channelThumbs.high :
