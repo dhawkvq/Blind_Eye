@@ -50,24 +50,33 @@ export const createEndpoint = (action: Action): string => {
 }
 
 
-export const getStorageInfo = async (navigator: Navigator) => {
-  if (navigator.storage && navigator.storage.estimate) {
-    try {
-      const { usage, quota } = await navigator.storage.estimate();
-      if(!usage || !quota) throw new Error('failed to estimate storage')
-      const percentageUsed = (usage / quota) * 100;
-      console.log(`You've used ${percentageUsed}% of the available storage.`);
-      const remaining = quota - usage;
-      console.log(`You can write up to ${remaining} more bytes.`);
-    }
-    catch(error){
-      console.log('there was an error from getDbInfo =>', error )
-    }  
+export const getStorageInfo = async (navigator: Navigator): Promise<void> => {
+  if(!navigator) throw new Error('user agent navigator must be passed to grab storage info')
+  try {
+    const { usage, quota } = await navigator.storage.estimate();
+    if(!usage || !quota) throw new Error('failed to estimate storage')
+    const percentageUsed = (usage / quota) * 100;
+    console.log(`You've used ${percentageUsed}% of the available storage.`);
+    const remaining = quota - usage;
+    console.log(`You can write up to ${remaining} more bytes.`);
   }
+  catch(error){
+    throw error
+  } 
 }
 
-export const formatDuration = (time: string) => {
-  let formatted = dayjs.duration(time)
+export const formatDuration = (time: string): string => {
+
+  if(!time) throw new Error('time arg is required')
+  if(typeof(time) !== 'string') throw new Error('time arg passed must be of type string')
+
+  const formatted = dayjs.duration(time)
+
+  const validDuration = Object.keys(formatted['$d'])
+
+  if(!validDuration.length) throw new Error('not a valid date ISO 8601 date time passed')
+  
+
   let { hours, minutes, seconds } = formatted['$d']
   if(+seconds < 10){
     seconds = `0${seconds}`
@@ -77,6 +86,7 @@ export const formatDuration = (time: string) => {
   }
   return `${minutes}:${seconds}`
 }
+
 
 export const formatViewCount = (count: string) => {
   if(count.length > 6){
