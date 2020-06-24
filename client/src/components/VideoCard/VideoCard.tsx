@@ -3,6 +3,7 @@ import './videoCard.scss'
 import logo from '../../logo.svg'
 import { storeInDB, deleteFromDB } from './utility'
 import { VidCardProps } from './typeDefs'
+import { Video } from '../../utility'
 
 
 const VideoCard = ({ video, setWatchLater, updateWatchLater, watchLater }: VidCardProps ) => {
@@ -36,12 +37,13 @@ const VideoCard = ({ video, setWatchLater, updateWatchLater, watchLater }: VidCa
     .catch(error => setVidError(error.message))
 
     setIsActive(false) 
-  }
+  } 
 
   const removeVid = () => {
     deleteFromDB(video.id)
       .then(() => 
-        setWatchLater(prevState => prevState.filter(({ id }) => id !== video.id ))
+        setWatchLater((prevState: Video[]) => 
+          prevState.filter(({ id }) => id !== video.id ))
       )
       .catch(error => console.log('the error from deleteFromDB =>', error ))
   }

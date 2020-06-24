@@ -8,6 +8,8 @@
 
 # testing
 /coverage
+/kittens/*
+/watch_later/*
 
 # production
 /build

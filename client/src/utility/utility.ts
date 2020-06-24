@@ -24,20 +24,28 @@ const {
 
 
 
-const createEndpoint = (action: Action) => {
-  switch(action.type){
+export const createEndpoint = (action: Action): string => {
+  if(!action) throw new Error('Action object must be passed to create endpoint')
 
+  const { data, type } = action
+
+  if(type === 'MULTI_VID' || type === 'CHANNEL_INFO'){
+    if(!data)throw new Error(`data property required when passing action type: ${type}`)
+    if(typeof(data) !== 'string') throw new Error('data arg on action must be of type string')
+  } 
+
+  switch(type){
     case 'POPULAR':
       return `${REACT_APP_API_ENDPOINT}&key=${REACT_APP_API_KEY}`
 
     case 'MULTI_VID':
-      return `${REACT_APP_MULT_CHAN_ENDPOINT}&id=${action.data}&key=${REACT_APP_API_KEY}`
+      return `${REACT_APP_MULT_CHAN_ENDPOINT}&id=${data}&key=${REACT_APP_API_KEY}`
 
     case 'CHANNEL_INFO':
-      return `${REACT_APP_CHANNELS_ENDPOINT}&id=${action.data}&key=${REACT_APP_API_KEY}`
+      return `${REACT_APP_CHANNELS_ENDPOINT}&id=${data}&key=${REACT_APP_API_KEY}`
     
     default:
-      return ''
+      throw new Error('action type passed was not one of type: POPULAR | MULTI_VID| CHANNEL_INFO')
   }
 }
 

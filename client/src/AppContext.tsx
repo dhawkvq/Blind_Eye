@@ -42,7 +42,7 @@ const AppContext = (props) => {
 
   const updateWatchLater = (info: Row) => {
     multiVidInfo([info])
-      .then(data => setWatchLater(prevState => [...prevState, ...data]))
+      .then(data => setWatchLater((prevState: Video[]) => [...prevState, ...data]))
       .catch(error => console.log('error updating watch later =>', error ))
   }
 
