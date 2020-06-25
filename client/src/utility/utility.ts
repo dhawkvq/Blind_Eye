@@ -125,19 +125,23 @@ export const formatPublishDate = (time: string): string => {
   return dayjs(time).fromNow()
 } 
 
-export const filOwnerPic = (channelThumbs : Resolutions ): Thumbnail => {
-  return channelThumbs.high ? channelThumbs.high :
-         channelThumbs.medium ? channelThumbs.medium :
-         channelThumbs.default
-}
 
-export const filThumbPic = (thumbnails: Resolutions ): Thumbnail => {
-  return thumbnails.maxres ? thumbnails.maxres: 
-         thumbnails.high ? thumbnails.high : 
-         thumbnails.standard ? thumbnails.standard :
-         thumbnails.default
-}
+export const filterThumbPic = (thumbnails: Resolutions ): Thumbnail => {
+  if(typeof(thumbnails) !== 'object') throw new Error('thumbnails param must be of type object')
+  if(!thumbnails.default) throw new Error('default object required in thumbnails')
 
+  const thumbnail = thumbnails.maxres ? thumbnails.maxres: 
+                    thumbnails.standard ? thumbnails.standard :
+                    thumbnails.high ? thumbnails.high : 
+                    thumbnails.medium ? thumbnails.medium : 
+                    thumbnails.default
+
+  const { url, width, height } = thumbnail
+  if(!url || !width || !height) {
+    throw new Error('thumbnail returned from function must have attributes:{ url: string, width: number, height: number}')                    
+  }
+  return thumbnail
+}
 
 
 export const distillVidInfo = (videos: VidWithThumbs[]): FormattedVideo[] => {
@@ -162,8 +166,8 @@ export const distillVidInfo = (videos: VidWithThumbs[]): FormattedVideo[] => {
       title,
       channelId,
       channelTitle,
-      thumbnailPic: filThumbPic(thumbnails),
-      channelOwnerPic: filOwnerPic(channelThumbs) ,
+      thumbnailPic: filterThumbPic(thumbnails),
+      channelOwnerPic: filterThumbPic(channelThumbs) ,
       vidTime: formatDuration(duration),
       viewCount: formatViewCount(viewCount) ,
       publishTime: formatPublishDate(publishedAt)

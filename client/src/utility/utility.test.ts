@@ -1,4 +1,4 @@
-import { createEndpoint, formatDuration, formatViewCount, formatPublishDate } from './utility'
+import { createEndpoint, formatDuration, formatViewCount, formatPublishDate, filterThumbPic } from './utility'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -91,4 +91,53 @@ describe('formatPublishDate', () => {
     expect(() => formatPublishDate(10))
       .toThrow('time arg must be of type string')
   })
+})
+
+describe('filterThumbPic', () => {
+  const validObject = { 
+    default: {
+      url: "https://yt3.ggpht.com/a/AATXAJy1JY0SVrvJKNiFfXw90WJGbYEwVHFasXJHmg=s88-c-k-c0xffffffff-no-rj-mo",
+      width: 88,
+      height: 88
+    },
+      medium: {
+      url: "https://yt3.ggpht.com/a/AATXAJy1JY0SVrvJKNiFfXw90WJGbYEwVHFasXJHmg=s240-c-k-c0xffffffff-no-rj-mo",
+      width: 240,
+      height: 240
+    },
+      high: {
+      url: "https://yt3.ggpht.com/a/AATXAJy1JY0SVrvJKNiFfXw90WJGbYEwVHFasXJHmg=s800-c-k-c0xffffffff-no-rj-mo",
+      width: 800,
+      height: 800
+    }
+  }
+
+  const invalidObject = {
+    medium: validObject.medium,
+    high: validObject.high
+  }
+
+  test('the function will return the default object', () => {
+    expect(filterThumbPic({ default: validObject.default })).toEqual(validObject.default)
+  })
+
+  test('that function will return the highest resolution', () => {
+    expect(filterThumbPic(validObject)).toEqual(validObject.high)
+  })
+
+  test('that object without default object throws error', () => {
+    expect(() => filterThumbPic(invalidObject))
+      .toThrow('default object required in thumbnails')
+  })
+
+  test('that function will throw error if the thumbnail it returns doesnt have proper return shape', () => {
+    expect(() => filterThumbPic({ default: { width: 800, height: 800 }}))
+      .toThrow('thumbnail returned from function must have attributes:{ url: string, width: number, height: number}')
+  })
+
+  test('throws error if anything but an object is passed as a param', () => {
+    expect(() => filterThumbPic('yes'))
+     .toThrow('thumbnails param must be of type object')
+  })
+  
 })
