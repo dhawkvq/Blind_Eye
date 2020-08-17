@@ -4,13 +4,14 @@ import logo from '../../logo.svg'
 import { storeInDB, deleteFromDB } from './utility'
 import { VidCardProps } from './typeDefs'
 import { Video } from '../../utility'
+import { useComponentVisible } from '../../hooks'
 
 
 const VideoCard = ({ video, setWatchLater, updateWatchLater, watchLater }: VidCardProps ) => {
 
-  const [isActive, setIsActive] = useState<boolean>(false)
   const [videoAdded, setVideoAdded] = useState<string>('')
   const [vidError, setVidError] = useState<string>('')
+  const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false)
 
   useEffect(() => {
     if(videoAdded){
@@ -22,6 +23,7 @@ const VideoCard = ({ video, setWatchLater, updateWatchLater, watchLater }: VidCa
       return () => clearTimeout(vidErrTimer)
     }
   }, [videoAdded, vidError])
+
 
 
   const saveForLater = () => { 
@@ -36,7 +38,7 @@ const VideoCard = ({ video, setWatchLater, updateWatchLater, watchLater }: VidCa
     })
     .catch(error => setVidError(error.message))
 
-    setIsActive(false) 
+    setIsComponentVisible(false) 
   } 
 
   const removeVid = () => {
@@ -48,12 +50,13 @@ const VideoCard = ({ video, setWatchLater, updateWatchLater, watchLater }: VidCa
       .catch(error => console.log('the error from deleteFromDB =>', error ))
   }
 
+
   let notifStyles = videoAdded ? 'notification--active': 
                     vidError ? 'notification--error' :
                     'notification'
 
   const { title, channelTitle, thumbnailPic, channelOwnerPic, vidTime, viewCount, publishTime } = video
-                    
+
   return(
     <div key={video.id} className='cardWrapper'>
       <div className='picCont'>
@@ -74,15 +77,16 @@ const VideoCard = ({ video, setWatchLater, updateWatchLater, watchLater }: VidCa
               <span id='pubTime'>- {publishTime}</span> 
             </p>
           </div>
-          <div className={ isActive ? 'toolTipActive': 'toolTip'}>
+          <div ref={ref} className='toolTip'>
             <p id='tooltipText'>Menu</p>
             <img 
               src={logo} 
               alt='action button'  
-              onClick={() => setIsActive(!isActive)}
-              className={isActive ? 'iconButtonActive': 'iconButton'}
+              onClick={() => setIsComponentVisible(!isComponentVisible)}
+              className={isComponentVisible ? 'iconButtonActive': 'iconButton'}
             />
-            <ul className='menu'>
+            { isComponentVisible && 
+              <ul className='menu'>
               { watchLater ?
                   <li onClick={removeVid}>Remove from watch later</li>
                 :
@@ -90,6 +94,7 @@ const VideoCard = ({ video, setWatchLater, updateWatchLater, watchLater }: VidCa
               }
               <li>Download</li>
             </ul>
+            }
           </div>
         </div>  
       </div>

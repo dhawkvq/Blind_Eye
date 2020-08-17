@@ -1,0 +1,1 @@
+export { useComponentVisible } from './visComponent'
