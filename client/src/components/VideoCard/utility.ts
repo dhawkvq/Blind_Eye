@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import { WLDB } from '../../config'
-import { storeDbParams } from './typeDefs'
+import { Video } from '../../utility'
 dayjs.extend(duration)
 
 
@@ -18,17 +18,26 @@ const createDuration = ( day: dayjs.Dayjs ) => {
   .toISOString()
 }
 
-export const storeInDB = async ({ videoId, channelId }: storeDbParams ) => {
+export const storeInDB = async (video: Video) => {
 
   const currentDay = dayjs()
   const vidForLater = {
-    _id: videoId,
-    channelId,
-    save_date: createDuration(currentDay) 
+    _id: video.id,
+    save_date: createDuration(currentDay),
+    ...video 
   }
 
   try {
-    return await WLDB.put(vidForLater)
+    const { id, ok } = await WLDB.put(vidForLater)
+
+    if(!ok) throw new Error('video did not properly save to watchLater DB')
+
+    try {
+      return await WLDB.get(id)
+    }
+    catch(error) {
+      throw new Error('problem retrieving  video from watchLater DB')
+    }
   } 
   catch (error) {
     throw error

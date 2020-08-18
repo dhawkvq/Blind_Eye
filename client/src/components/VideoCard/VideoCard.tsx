@@ -3,11 +3,11 @@ import './videoCard.scss'
 import logo from '../../logo.svg'
 import { storeInDB, deleteFromDB } from './utility'
 import { VidCardProps } from './typeDefs'
-import { Video } from '../../utility'
+import { Video, formatDuration, formatViewCount, formatPublishDate } from '../../utility'
 import { useComponentVisible } from '../../hooks'
 
 
-const VideoCard = ({ video, setWatchLater, updateWatchLater, watchLater }: VidCardProps ) => {
+const VideoCard = ({ video, setWatchLater, watchLater }: VidCardProps ) => {
 
   const [videoAdded, setVideoAdded] = useState<string>('')
   const [vidError, setVidError] = useState<string>('')
@@ -27,14 +27,10 @@ const VideoCard = ({ video, setWatchLater, updateWatchLater, watchLater }: VidCa
 
 
   const saveForLater = () => { 
-
-    storeInDB({ 
-      videoId: video.id, 
-      channelId: video.channelId
-    })
+    storeInDB(video)
     .then(data => {
       setVideoAdded('Video Added!')
-      updateWatchLater(data)
+      setWatchLater((prevState: Video[]) => [...prevState,data])
     })
     .catch(error => setVidError(error.message))
 
@@ -62,7 +58,7 @@ const VideoCard = ({ video, setWatchLater, updateWatchLater, watchLater }: VidCa
       <div className='picCont'>
         <img src={thumbnailPic.url} alt='video thumbnail pic' />
         <span className={notifStyles}>{vidError||videoAdded}</span>
-        <p>{vidTime}</p>
+        <p>{formatDuration(vidTime)}</p>
       </div>
       <div className='detailBar'>
         <div className='picHousing'>
@@ -73,8 +69,8 @@ const VideoCard = ({ video, setWatchLater, updateWatchLater, watchLater }: VidCa
             <p id='title'>{title}</p> 
             <p id='chanTitle' >
               {channelTitle}
-              <span>{viewCount} Views</span>
-              <span id='pubTime'>- {publishTime}</span> 
+              <span>{formatViewCount(viewCount)} Views</span>
+              <span id='pubTime'>- {formatPublishDate(publishTime)}</span> 
             </p>
           </div>
           <div ref={ref} className='toolTip'>
@@ -87,12 +83,12 @@ const VideoCard = ({ video, setWatchLater, updateWatchLater, watchLater }: VidCa
             />
             { isComponentVisible && 
               <ul className='menu'>
-              { watchLater ?
-                  <li onClick={removeVid}>Remove from watch later</li>
-                :
-                  <li onClick={saveForLater}>Watch Later</li>
-              }
-              <li>Download</li>
+                { watchLater ?
+                    <li onClick={removeVid}>Remove from watch later</li>
+                  :
+                    <li onClick={saveForLater}>Watch Later</li>
+                }
+                <li>Download</li>
             </ul>
             }
           </div>

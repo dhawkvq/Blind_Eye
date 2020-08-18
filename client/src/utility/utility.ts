@@ -168,9 +168,9 @@ export const distillVidInfo = (videos: VidWithThumbs[]): FormattedVideo[] => {
       channelTitle,
       thumbnailPic: filterThumbPic(thumbnails),
       channelOwnerPic: filterThumbPic(channelThumbs) ,
-      vidTime: formatDuration(duration),
-      viewCount: formatViewCount(viewCount) ,
-      publishTime: formatPublishDate(publishedAt)
+      vidTime: duration,
+      viewCount,
+      publishTime: publishedAt
     }
 
   })

@@ -3,10 +3,8 @@ import React, { useState, useEffect } from 'react'
 import { 
   grabDbItems, 
   grabWlItems, 
-  multiVidInfo, 
   distillVidInfo, 
   Video,
-  Row 
 } from './utility'
 import { popularList } from './mock_data'
 
@@ -40,18 +38,13 @@ const AppContext = (props) => {
       .catch(error => console.log('error from grabWlItems =>', error ))
   }, [])
 
-  const updateWatchLater = (info: Row) => {
-    multiVidInfo([info])
-      .then(data => setWatchLater((prevState: Video[]) => [...prevState, ...data]))
-      .catch(error => console.log('error updating watch later =>', error ))
-  }
 
   return(
     <AppCtx.Provider 
       value={{ 
         savedVideos, hotReel, 
         setHotReel, watchLater, 
-        setWatchLater, updateWatchLater 
+        setWatchLater
       }}
     >
       { props.children }

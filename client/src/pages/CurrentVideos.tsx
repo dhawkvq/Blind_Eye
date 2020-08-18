@@ -16,6 +16,7 @@ const style = {
 const CurrentVideos = () => {
 
   const { savedVideos = [] } = useContext(AppCtx)
+  console.log('saved vids=>', savedVideos)
 
   return (
     <div style={style.wrapper}>

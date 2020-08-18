@@ -8,8 +8,9 @@ const WatchLater = () => {
   const { 
     watchLater = [], 
     setWatchLater, 
-    updateWatchLater 
   } = useContext(AppCtx)
+
+  console.log('watchLater =>', watchLater)
 
   return (
     <div style={{ border: '1px dashed white', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -17,7 +18,7 @@ const WatchLater = () => {
         watchLater.map((video: Video) => 
           <VideoCard 
             key={video.id} 
-            {...{video, setWatchLater, updateWatchLater}} 
+            {...{video, setWatchLater}} 
             watchLater 
           />
         )
