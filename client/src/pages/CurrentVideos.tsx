@@ -19,6 +19,7 @@ const CurrentVideos = () => {
           <VideoCard 
             key={video.id} 
             {...{video, setSavedVids, setWatchLater}}
+            savedVideos
           />
         ))
       }

@@ -253,7 +253,7 @@ export const multiVidInfo = async ( saved: Row[] ) => {
 
 
 export const grabDB = async (database:string) => {
-  const pouch = database === 'watchLater' ? db : WLDB
+  const pouch = database === 'watchLater' ? WLDB : db
   try {
     const res = await pouch.allDocs({ include_docs: true })
     if(!res.rows.length) throw new Error('no rows found')

@@ -44,12 +44,18 @@ export const storeInDB = async (video: Video) => {
   }
 }
 
-export const deleteFromDB = async (id: string) => {
+type DeleteArgs = {
+  database: string;
+  id: string;
+}
+
+export const deleteFromDB = async ({ database, id }: DeleteArgs) => {
+  const pouch = database === 'watchLater' ? WLDB : db
   try{
-    const doc = await WLDB.get(id)
+    const doc = await pouch.get(id)
 
     try {
-      await WLDB.remove(doc)
+      await pouch.remove(doc)
     } 
     catch (error) {
       throw error

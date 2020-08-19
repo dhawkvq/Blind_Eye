@@ -7,7 +7,7 @@ import { Video, formatDuration, formatViewCount, formatPublishDate } from '../..
 import { useComponentVisible } from '../../hooks'
 
 
-const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids }: VidCardProps ) => {
+const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids, savedVideos }: VidCardProps ) => {
 
   const [videoAdded, setVideoAdded] = useState<string>('')
   const [vidError, setVidError] = useState<string>('')
@@ -48,11 +48,22 @@ const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids }: VidCardPr
   }
 
   const removeVid = () => {
-    deleteFromDB(video.id)
-      .then(() => 
-        setWatchLater((prevState: Video[]) => 
-          prevState.filter(({ id }) => id !== video.id ))
-      )
+
+    const removalObj = {
+      database: watchLater ? 'watchLater' : 'savedVids',
+      id: video.id
+    }
+
+    deleteFromDB(removalObj)
+      .then(() => {
+        if(savedVideos && setSavedVids){
+          setSavedVids((prevState: Video[]) => prevState.filter(({ id }) => id !== video.id ))
+        } else {
+          setWatchLater((prevState: Video[]) => 
+            prevState.filter(({ id }) => id !== video.id ))
+        }
+
+      })
       .catch(error => console.log('the error from deleteFromDB =>', error ))
   }
 
@@ -95,10 +106,16 @@ const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids }: VidCardPr
               <ul className='menu'>
                 { watchLater ?
                     <li onClick={removeVid}>Remove from watch later</li>
-                  :
+                    :
+                    savedVideos ?
+                    <li onClick={removeVid}>Remove from saved videos</li>
+                    :
                     <li onClick={saveForLater}>Watch Later</li>
                 }
-                <li onClick={handleDownload}>Download</li>
+                {
+                  !savedVideos &&
+                  <li onClick={handleDownload}>Download</li>
+                }
             </ul>
             }
           </div>
