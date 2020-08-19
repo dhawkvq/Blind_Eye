@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
-import { WLDB } from '../../config'
-import { Video } from '../../utility'
+import { db, WLDB } from '../../config'
+import { Video, downloadVideo } from '../../utility'
 dayjs.extend(duration)
 
 
@@ -36,7 +36,7 @@ export const storeInDB = async (video: Video) => {
       return await WLDB.get(id)
     }
     catch(error) {
-      throw new Error('problem retrieving  video from watchLater DB')
+      throw new Error('problem retrieving video from watchLater DB')
     }
   } 
   catch (error) {
@@ -58,4 +58,30 @@ export const deleteFromDB = async (id: string) => {
   catch(error){
     throw error
   }
+}
+
+export const downloadVid = async (video:Video)=> {
+  try{
+    const vidData = await downloadVideo(video.id)
+    if (!vidData) throw new Error('video came back undefined')
+    const newVid = {
+      _id: video.id,
+      ...video,
+      vidData
+    }
+
+    try {
+      const { id, ok } = await db.put(newVid)
+      if(!ok) throw new Error('problem placing new video in db')
+
+      try {
+        return await db.get(id)
+      } 
+      catch (error) { throw error }
+      
+    } 
+    catch (error) { throw error }
+
+  }
+  catch(error){ throw error }
 }

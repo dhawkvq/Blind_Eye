@@ -37,6 +37,7 @@ export type Video = {
   vidTime: string;
   viewCount: string;
   publishTime: string;
+  vidData?: Blob;
 }
 
 export interface RawVidInfo {

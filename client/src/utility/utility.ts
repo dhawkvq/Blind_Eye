@@ -246,40 +246,24 @@ export const multiVidInfo = async ( saved: Row[] ) => {
     try{
       return await channelOwnerInfo(items)
     }
-    catch(error){
-      throw error
-    }
+    catch(error){ throw error }
   }
-  catch(error){
-    throw error
-  }
+  catch(error){ throw error }
 } 
 
 
-export const grabDbItems = async () => {
-
+export const grabDB = async (database:string) => {
+  const pouch = database === 'watchLater' ? db : WLDB
   try {
-    return await db.allDocs({ include_docs: true })
+    const res = await pouch.allDocs({ include_docs: true })
+    if(!res.rows.length) throw new Error('no rows found')
+    return res.rows.reduce((acc:any,val) => [val.doc, ...acc],[])
   } 
   catch (error) {
     throw error  
   }
 }
 
-export const grabWlItems = async () => {
-  try{
-    const info = await WLDB.allDocs({ include_docs: true })
-    try{
-      return await multiVidInfo(info.rows)
-    }
-    catch(error){
-      throw error
-    }
-  }
-  catch(error){
-    throw error
-  }
-}
 
 export const channelOwnerInfo = async (incoming: RawVidInfo[]) => {
 

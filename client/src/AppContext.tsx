@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
-// import { fetchInfo ,channelOwnerInfo } from './utility'
 import { 
-  grabDbItems, 
-  grabWlItems, 
+  grabDB, 
   distillVidInfo, 
   Video,
 } from './utility'
@@ -13,38 +11,27 @@ export const AppCtx = React.createContext()
 
 const AppContext = (props) => {
   
-  const [savedVideos, setSavedVids] = useState([])
+  const [savedVideos, setSavedVids] = useState<Video[]>([])
   const [hotReel, setHotReel] = useState<Video[]>([...distillVidInfo(popularList)])
   const [watchLater, setWatchLater] = useState<Video[]>([])
-  // const [nextPage, setNextPage] = useState('')
-
-  // useEffect(() => {
-  //   fetchInfo()
-  //     .then(({ nextPageToken, items }) => {
-  //       setNextPage(nextPageToken)
-  //       return channelOwnerInfo(items)
-  //     })
-  //     .then(res => setHotReel(res))
-  //     .catch(error => console.log('error from setting channelOwnerInfo =>', error ))
-  // }, [hotReel])
 
   useEffect(() => {
-    grabDbItems()
-      .then(res => setSavedVids(res.rows))
-      .catch(error => console.log('error from call to grabDbItems =>', error ))
+    grabDB('savedVideos')
+      .then(setSavedVids)
+      .catch(error => console.log(error))
 
-    grabWlItems()
+    grabDB('watchLater')
       .then(setWatchLater)  
-      .catch(error => console.log('error from grabWlItems =>', error ))
+      .catch(error => console.log(error))
   }, [])
 
 
   return(
     <AppCtx.Provider 
       value={{ 
-        savedVideos, hotReel, 
-        setHotReel, watchLater, 
-        setWatchLater
+        savedVideos, setSavedVids,
+        hotReel, setHotReel, 
+        watchLater, setWatchLater
       }}
     >
       { props.children }

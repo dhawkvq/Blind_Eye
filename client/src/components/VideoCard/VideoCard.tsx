@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import './videoCard.scss'
 import logo from '../../logo.svg'
-import { storeInDB, deleteFromDB } from './utility'
+import { storeInDB, deleteFromDB, downloadVid } from './utility'
 import { VidCardProps } from './typeDefs'
 import { Video, formatDuration, formatViewCount, formatPublishDate } from '../../utility'
 import { useComponentVisible } from '../../hooks'
 
 
-const VideoCard = ({ video, setWatchLater, watchLater }: VidCardProps ) => {
+const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids }: VidCardProps ) => {
 
   const [videoAdded, setVideoAdded] = useState<string>('')
   const [vidError, setVidError] = useState<string>('')
@@ -36,6 +36,16 @@ const VideoCard = ({ video, setWatchLater, watchLater }: VidCardProps ) => {
 
     setIsComponentVisible(false) 
   } 
+
+  const handleDownload = () => {
+    downloadVid(video)
+      .then(savedVid => {
+        if(setSavedVids){
+          setSavedVids((prevState: Video[]) => [savedVid, ...prevState])
+        }
+      })
+      .catch(error => console.log('error from handleDownload =>', error ))
+  }
 
   const removeVid = () => {
     deleteFromDB(video.id)
@@ -88,7 +98,7 @@ const VideoCard = ({ video, setWatchLater, watchLater }: VidCardProps ) => {
                   :
                     <li onClick={saveForLater}>Watch Later</li>
                 }
-                <li>Download</li>
+                <li onClick={handleDownload}>Download</li>
             </ul>
             }
           </div>

@@ -11,7 +11,8 @@ const HotReel = () => {
     hotReel = [], 
     setHotReel, 
     setWatchLater, 
-    updateWatchLater 
+    updateWatchLater,
+    setSavedVids 
   } = useContext(AppCtx)
 
   
@@ -36,7 +37,7 @@ const HotReel = () => {
           hotReel.map((video: Video) => 
             <VideoCard 
               key={video.id} 
-              {...{video, setWatchLater, updateWatchLater}}
+              {...{video, setWatchLater, updateWatchLater, setSavedVids}}
             /> 
           )
       } 

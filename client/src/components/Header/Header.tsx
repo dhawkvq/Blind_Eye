@@ -19,12 +19,6 @@ const Header = () => {
           exact to='/' 
           activeStyle={styles.active}
         >
-          Saved Vids
-        </NavLink>
-        <NavLink 
-          to='/popular' 
-          activeStyle={styles.active}
-        >
           Popular Vids
         </NavLink>
         <NavLink 
@@ -32,6 +26,12 @@ const Header = () => {
           activeStyle={styles.active}
         >
           Watch Later
+        </NavLink>
+        <NavLink 
+          to='/my-vids' 
+          activeStyle={styles.active}
+        >
+          Saved Vids
         </NavLink>
       </span>
     </header>

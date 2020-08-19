@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import './hotReel.scss'
 import { AppCtx } from '../AppContext'
 import { VideoCard } from '../components'
 import { Video } from '../utility'
@@ -10,10 +11,8 @@ const WatchLater = () => {
     setWatchLater, 
   } = useContext(AppCtx)
 
-  console.log('watchLater =>', watchLater)
-
   return (
-    <div style={{ border: '1px dashed white', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div className='wrapper'>
       { watchLater.length ? 
         watchLater.map((video: Video) => 
           <VideoCard 

@@ -23,8 +23,8 @@ const App = () => {
         <Header />
         <AppContext>
           <Switch>
-            <Route exact path='/' component={CurrentVideos} />
-            <Route path='/popular' component={HotReel} />
+            <Route exact path='/' component={HotReel} />
+            <Route path='/my-vids' component={CurrentVideos} />
             <Route path='/watch-later' component={WatchLater} />
           </Switch>
         </AppContext> 
