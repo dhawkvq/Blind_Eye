@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import './videoCard.scss'
 import logo from '../../logo.svg'
 import { storeInDB, deleteFromDB, downloadVid } from './utility'
@@ -23,7 +24,6 @@ const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids, savedVideos
       return () => clearTimeout(vidErrTimer)
     }
   }, [videoAdded, vidError])
-
 
 
   const saveForLater = () => { 
@@ -67,6 +67,11 @@ const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids, savedVideos
       .catch(error => console.log('the error from deleteFromDB =>', error ))
   }
 
+  let history = useHistory()
+  
+  const handlePlay = () => {
+    history.push(`watch-video/${video.id}`)
+  }
 
   let notifStyles = videoAdded ? 'notification--active': 
                     vidError ? 'notification--error' :
@@ -76,9 +81,9 @@ const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids, savedVideos
 
   return(
     <div key={video.id} className='cardWrapper'>
-      <div className='picCont'>
-        <img src={thumbnailPic.url} alt='video thumbnail pic' />
+      <div className='picCont' onClick={handlePlay}>
         <span className={notifStyles}>{vidError||videoAdded}</span>
+        <img src={thumbnailPic.url} alt='video thumbnail pic' />
         <p>{formatDuration(vidTime)}</p>
       </div>
       <div className='detailBar'>

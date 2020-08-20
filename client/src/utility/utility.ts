@@ -264,6 +264,13 @@ export const grabDB = async (database:string) => {
   }
 }
 
+export const grabVidById = async(id:string) => {
+  try{
+    return await db.get(id)
+  }
+  catch(error){ throw error }
+}
+
 
 export const channelOwnerInfo = async (incoming: RawVidInfo[]) => {
 

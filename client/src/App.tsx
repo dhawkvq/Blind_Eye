@@ -8,7 +8,7 @@ import './App.css';
 import { getStorageInfo } from './utility'
 import AppContext from './AppContext';
 import { CurrentVideos, HotReel, WatchLater } from './pages'
-import { Header } from './components'
+import { Header, VideoPlayer } from './components'
 
 
 const App = () => {  
@@ -26,6 +26,7 @@ const App = () => {
             <Route exact path='/' component={HotReel} />
             <Route path='/my-vids' component={CurrentVideos} />
             <Route path='/watch-later' component={WatchLater} />
+            <Route path='/watch-video/:id' component={VideoPlayer} />
           </Switch>
         </AppContext> 
       </Router>
