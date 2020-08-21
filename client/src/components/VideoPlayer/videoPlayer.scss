@@ -6,6 +6,7 @@
   align-items: center;
 
   .vidWrapper {
+    position: relative;
     border: 1px dashed white;
     max-width: 800px; 
     max-height: 700px;
@@ -13,6 +14,18 @@
     video {
       width: 100%; 
       height: 100%;
+    }
+    
+    .controls {
+      z-index: 1;
+
+      p {
+        margin: 5px;
+      }
+      
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 }

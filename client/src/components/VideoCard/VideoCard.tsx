@@ -57,7 +57,8 @@ const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids, savedVideos
     deleteFromDB(removalObj)
       .then(() => {
         if(savedVideos && setSavedVids){
-          setSavedVids((prevState: Video[]) => prevState.filter(({ id }) => id !== video.id ))
+          setSavedVids((prevState: Video[]) => 
+            prevState.filter(({ id }) => id !== video.id ))
         } else {
           setWatchLater((prevState: Video[]) => 
             prevState.filter(({ id }) => id !== video.id ))
