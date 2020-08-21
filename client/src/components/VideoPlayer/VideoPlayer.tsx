@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react'
 import './videoPlayer.scss'
+import { PlayButton, PauseButton } from './components'
 import { grabVidById } from '../../utility'
 
 const VideoPlayer = ({ match }) => {
@@ -21,7 +22,7 @@ const VideoPlayer = ({ match }) => {
         setVideoInfo(video)
         setVideoUrl(window.URL.createObjectURL(video['vidData']))
       })
-      .catch(error => console.log('error grabbing vid =>', error))
+      .catch(error => setVidError(error.message))
   }, [match.params])
 
   
@@ -52,21 +53,19 @@ const VideoPlayer = ({ match }) => {
       >
         { videoUrl &&
         <>
-        {
-          showControls &&
-          <div style={{ position: "absolute", display: 'flex', border: '1px dashed white', bottom: '10%', left: '45%', color: 'white',
-            padding: 10, justifyContent: 'space-around'
-          }}
-            className='controls'
-          > 
-            {
-              vidPlaying ?
-              <p onClick={handlePause}>PAUSE</p>
-              :
-              <p onClick={handlePlay}>PLAY</p>
-            }
-          </div>
-        }
+          {
+            showControls &&
+            <div style={{ border: '1px dashed white' }}
+              className='controls'
+            > 
+              {
+                vidPlaying ?
+                <PauseButton handleClick={handlePause} />
+                :
+                <PlayButton handleClick={handlePlay}/>
+              }
+            </div>
+          }
           <video ref={vidRef}>
             <source src={videoUrl}/>
           </video>

@@ -18,6 +18,14 @@
     
     .controls {
       z-index: 1;
+      position: absolute; 
+      display: flex; 
+      justify-content: space-around;
+      bottom: 10px; 
+      left: 0;
+      right: 0;
+      margin-left: auto;
+      margin-right: auto;
 
       p {
         margin: 5px;
@@ -28,4 +36,33 @@
       }
     }
   }
+}
+
+.play-pause {
+  height: 50px;
+  width: 50px;
+  
+  #ring {
+    stroke: grey;
+    stroke-width: 5px;
+    transition: all .6s ease;
+  }
+  
+  #button {
+    fill: grey;
+    stroke: grey;
+    transition: all .6s ease;
+  }
+
+  &:hover {
+    #ring {
+      stroke: white;
+    }
+
+    #button {
+      fill:white;
+      stroke: white;
+    }
+  }
+
 }
