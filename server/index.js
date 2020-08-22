@@ -1,7 +1,7 @@
 const express = require('express')
 const ytdl = require('ytdl-core')
-const fs = require('fs')
 const app = express()
+const path = require('path')
 
 const port = 5000
 
@@ -21,6 +21,13 @@ app.get('/api/stream/:id', (req,res) => {
   ytdl(`http://www.youtube.com/watch?v=${id}`).pipe(res)
   
 })
+
+if(process.env.NODE_ENV === 'production'){
+  app.use(express.static('../client/build'))
+  app.get('*', (req,res) => {
+    res.sendFile(path.resolve(__dirname, '..', 'client', 'build', 'index.html'))
+  })
+}
 
 
 app.listen(port, () => console.log(`express server listening on http://localhost:${port}`))
