@@ -2,67 +2,11 @@
   border: 1px dashed yellow; 
   display: flex; 
   flex-direction: column; 
-  justify-content: center;
   align-items: center;
+  height: 80vh;
 
-  .vidWrapper {
-    position: relative;
-    border: 1px dashed white;
-    max-width: 800px; 
-    max-height: 700px;
-
-    video {
-      width: 100%; 
-      height: 100%;
-    }
+  video {
+    height: 70%;
+  }
     
-    .controls {
-      z-index: 1;
-      position: absolute; 
-      display: flex; 
-      justify-content: space-around;
-      bottom: 10px; 
-      left: 0;
-      right: 0;
-      margin-left: auto;
-      margin-right: auto;
-
-      p {
-        margin: 5px;
-      }
-      
-      &:hover {
-        cursor: pointer;
-      }
-    }
-  }
-}
-
-.play-pause {
-  height: 50px;
-  width: 50px;
-  
-  #ring {
-    stroke: grey;
-    stroke-width: 5px;
-    transition: all .6s ease;
-  }
-  
-  #button {
-    fill: grey;
-    stroke: grey;
-    transition: all .6s ease;
-  }
-
-  &:hover {
-    #ring {
-      stroke: white;
-    }
-
-    #button {
-      fill:white;
-      stroke: white;
-    }
-  }
-
 }
