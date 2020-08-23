@@ -19,9 +19,8 @@ const {
   REACT_APP_API_ENDPOINT, 
   REACT_APP_API_KEY, 
   REACT_APP_CHANNELS_ENDPOINT,
-  REACT_APP_MULT_CHAN_ENDPOINT 
+  REACT_APP_MULT_CHAN_ENDPOINT,
 } = process.env
-
 
 
 export const createEndpoint = (action: Action): string => {
@@ -182,7 +181,12 @@ export const fetchInfo = async () => {
   try {
     const res = await fetch(createEndpoint({ type: 'POPULAR' }))
     if(!res.ok) throw new Error('failed to fetchInfo')
-    return await res.json()
+    const { items } = await res.json()
+    if (!items) throw new Error('items came up empty')
+    try {
+      return await channelOwnerInfo(items)
+    } 
+    catch (error) {throw error }
   }
   catch(error) {
     throw error
