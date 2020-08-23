@@ -5,7 +5,6 @@ const path = require('path')
 
 const port = 5000
 
-app.get('/api', (req,res) => res.status(200).send({ 'data': 'success' }))
 
 app.get('/api/stream/:id', (req,res) => {
   const { id } = req.params
