@@ -2,8 +2,11 @@ const express = require('express')
 const ytdl = require('ytdl-core')
 const app = express()
 const path = require('path')
+const dotenv = require('dotenv')
+dotenv.config()
 
-const port = 5000
+
+const port = process.env.PORT || 5000
 
 
 app.get('/api/stream/:id', (req,res) => {
