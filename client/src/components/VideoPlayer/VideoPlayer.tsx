@@ -5,7 +5,7 @@ import { grabVidById } from '../../utility'
 
 const VideoPlayer = ({ match }) => {
 
-  const [videoUrl, setVideoUrl] = useState(null)
+  const [videoUrl, setVideoUrl] = useState<null|string>(null)
   const [videoInfo, setVideoInfo] = useState(null)
   const [vidError, setVidError] = useState(null)
   const vidRef = useRef(null);
@@ -15,7 +15,7 @@ const VideoPlayer = ({ match }) => {
     const { id } = match.params
     if(!id){ console.log('no id was supplied to videoPlayer!')}
     grabVidById(id)
-      .then(video => {
+      .then((video:any) => {
         setVideoInfo(video)
         setVideoUrl(window.URL.createObjectURL(video['vidData']))
       })

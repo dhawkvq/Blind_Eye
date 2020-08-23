@@ -6,7 +6,16 @@ import {
 } from './utility'
 import { popularList } from './mock_data'
 
-export const AppCtx = React.createContext()
+type ContextTypes = {
+  savedVideos: Video[];
+  hotReel: Video[];
+  watchLater: Video[];
+  setSavedVids: React.Dispatch<React.SetStateAction<Video[]>>;
+  setHotReel: React.Dispatch<React.SetStateAction<Video[]>>;
+  setWatchLater: React.Dispatch<React.SetStateAction<Video[]>>;
+}
+
+export const AppCtx = React.createContext<ContextTypes | undefined>(undefined)
 
 
 const AppContext = (props) => {

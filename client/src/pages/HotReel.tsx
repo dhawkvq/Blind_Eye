@@ -7,42 +7,46 @@ import { Video } from '../utility'
 
 const HotReel = () => {
 
-  const { 
-    hotReel = [], 
-    setHotReel, 
-    setWatchLater, 
-    updateWatchLater,
-    setSavedVids 
-  } = useContext(AppCtx)
+  const appCtx = useContext(AppCtx)
 
-  
   useEffect(() => {
+    if(appCtx){
+      const {setHotReel} = appCtx
 
-    const handleScroll = () => {
-      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        setHotReel(prevState => [...prevState,...prevState.slice(0,5)])
+      const handleScroll = () => {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+          setHotReel(prevState => [...prevState,...prevState.slice(0,5)])
+        }
       }
+  
+      window.addEventListener('scroll', handleScroll)
+      
+      return () => window.removeEventListener('scroll', handleScroll)
     }
-
-    window.addEventListener('scroll', handleScroll)
     
-    return () => window.removeEventListener('scroll', handleScroll)
-    
-  }, [setHotReel])
+  }, [appCtx])
 
+  if(appCtx){
 
-  return (
-    <div className='wrapper'>
-      { hotReel.length > 0 && 
-          hotReel.map((video: Video) => 
-            <VideoCard 
-              key={video.id} 
-              {...{video, setWatchLater, updateWatchLater, setSavedVids}}
-            /> 
-          )
-      } 
-    </div>
-  )
+    const { 
+      hotReel = [], 
+      setWatchLater, 
+      setSavedVids 
+    } = appCtx
+
+    return (
+      <div className='wrapper'>
+        { hotReel.length > 0 && 
+            hotReel.map((video: Video) => 
+              <VideoCard 
+                key={video.id} 
+                {...{video, setWatchLater, setSavedVids}}
+              /> 
+            )
+        } 
+      </div>
+    )
+  }
 }
 
 export default HotReel
