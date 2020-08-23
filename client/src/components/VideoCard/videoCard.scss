@@ -11,11 +11,37 @@
    position: relative;
    transition: all 1s ease;
 
-
   &:hover{
    transform: scale(1.015);
    cursor: pointer;
+
+   .playCover {
+     visibility: visible;
+     background: rgba(black,0.5);
+
+     svg {
+       opacity: 100;
+     }
+   }
   }
+
+  .playCover {
+    visibility: hidden;
+    position: absolute; 
+    border-radius: 10px 10px 0 0;
+    height: 99.5%; 
+    width: 100%; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    transition: all .7s ease;
+
+    svg {
+      opacity: 0;
+      transition: all .7s ease;
+    }
+  }
+
 
     img {
       border-radius: 10px 10px 0 0;

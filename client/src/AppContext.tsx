@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { 
   grabDB, 
   Video,
-  fetchInfo
+  distillVidInfo
+  // fetchInfo
 } from './utility'
+import { popularList } from './mock_data'
 
 
 type ContextTypes = {
@@ -21,13 +23,13 @@ export const AppCtx = React.createContext<ContextTypes | undefined>(undefined)
 const AppContext = (props) => {
   
   const [savedVideos, setSavedVids] = useState<Video[]>([])
-  const [hotReel, setHotReel] = useState<Video[]>([])
+  const [hotReel, setHotReel] = useState<Video[]>(distillVidInfo(popularList))
   const [watchLater, setWatchLater] = useState<Video[]>([])
 
   useEffect(() => {
-    fetchInfo()
-      .then(setHotReel)
-      .catch(error => console.log('error from fetch info =>', error ))
+    // fetchInfo()
+    //   .then(setHotReel)
+    //   .catch(error => console.log('error from fetch info =>', error ))
 
     grabDB('savedVideos')
       .then(setSavedVids)

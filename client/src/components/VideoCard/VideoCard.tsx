@@ -6,6 +6,7 @@ import { storeInDB, deleteFromDB, downloadVid } from './utility'
 import { VidCardProps } from './typeDefs'
 import { Video, formatDuration, formatViewCount, formatPublishDate } from '../../utility'
 import { useComponentVisible } from '../../hooks'
+import { PlayButton } from './components'
 
 
 const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids, savedVideos }: VidCardProps ) => {
@@ -38,6 +39,9 @@ const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids, savedVideos
   } 
 
   const handleDownload = () => {
+
+    setIsComponentVisible(false)
+
     downloadVid(video)
       .then(savedVid => {
         if(setSavedVids){
@@ -83,6 +87,9 @@ const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids, savedVideos
   return(
     <div key={video.id} className='cardWrapper'>
       <div className='picCont' onClick={handlePlay}>
+        <div className='playCover'>
+          <PlayButton />  
+        </div>
         <span className={notifStyles}>{vidError||videoAdded}</span>
         <img src={thumbnailPic.url} alt='video thumbnail pic' />
         <p>{formatDuration(vidTime)}</p>
