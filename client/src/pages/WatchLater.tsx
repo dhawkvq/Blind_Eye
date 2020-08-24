@@ -3,6 +3,7 @@ import './hotReel.scss'
 import { AppCtx } from '../AppContext'
 import { VideoCard } from '../components'
 import { Video } from '../utility'
+import { NoVideoNotif } from './components'
 
 const WatchLater = () => {
 
@@ -23,7 +24,9 @@ const WatchLater = () => {
             />
           )
           :
-          <h1>No Videos to watch later</h1>
+          <NoVideoNotif 
+            message='You currently have no videos to watch later'
+          />
         }
       </div>
     )
