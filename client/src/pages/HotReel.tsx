@@ -5,7 +5,7 @@ import { VideoCard } from '../components'
 import { Video } from '../utility'
 
 
-const HotReel = () => {
+const HotReel = ({ history }) => {
 
   const appCtx = useContext(AppCtx)
 
@@ -31,11 +31,22 @@ const HotReel = () => {
     const { 
       hotReel = [], 
       setWatchLater, 
-      setSavedVids 
+      setSavedVids,
+      transitionComp: { fromComp, toComp }, 
+      setTransitionComp
     } = appCtx
 
+    const handleTransition = ({ animationName }) => {
+      if(animationName === 'fadeOut'){
+        history.push(toComp)
+        setTransitionComp({})
+      }
+    }
+
+    let wrapperClass = fromComp === '/' ? 'wrapper--transition': 'wrapper'
+
     return (
-      <div className='wrapper'>
+      <div className={wrapperClass} onAnimationEnd={handleTransition}>
         { hotReel.length > 0 && 
             hotReel.map((video: Video) => 
               <VideoCard 

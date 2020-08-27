@@ -9,17 +9,20 @@ import {
   Thumbnail, 
   ChanOwnerRes 
 } from './typeDefs'
+import { popularList } from '../mock_data'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(duration)
 dayjs.extend(relativeTime)
 
+
 const { 
   REACT_APP_API_ENDPOINT, 
   REACT_APP_API_KEY, 
   REACT_APP_CHANNELS_ENDPOINT,
   REACT_APP_MULT_CHAN_ENDPOINT,
+  NODE_ENV
 } = process.env
 
 
@@ -178,6 +181,11 @@ export const distillVidInfo = (videos: VidWithThumbs[]): FormattedVideo[] => {
 
 
 export const fetchInfo = async () => {
+
+  if(NODE_ENV === 'development'){
+    return distillVidInfo(popularList)
+  }
+
   try {
     const res = await fetch(createEndpoint({ type: 'POPULAR' }))
     if(!res.ok) throw new Error('failed to fetchInfo')

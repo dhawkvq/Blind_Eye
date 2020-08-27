@@ -5,16 +5,30 @@ import { VideoCard } from '../components'
 import { Video } from '../utility'
 import { NoVideoNotif } from './components'
 
-const WatchLater = () => {
+const WatchLater = ({ history }) => {
 
   const appCtx = useContext(AppCtx)
 
   if(appCtx){
 
-    const { watchLater = [], setWatchLater } = appCtx
+    const { 
+      watchLater = [], 
+      setWatchLater, 
+      transitionComp: { fromComp, toComp },
+      setTransitionComp  
+    } = appCtx
+
+    const handleTransition = ({ animationName }) => {
+      if(animationName === 'fadeOut'){
+        history.push(toComp)
+        setTransitionComp({})
+      }
+    }
+
+    let wrapperClass = fromComp === '/watch-later' ? 'wrapper--transition': 'wrapper'
     
     return (
-      <div className='wrapper'>
+      <div className={wrapperClass} onAnimationEnd={handleTransition}>
         { watchLater.length ? 
           watchLater.map((video: Video) => 
             <VideoCard 

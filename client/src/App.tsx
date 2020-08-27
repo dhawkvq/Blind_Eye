@@ -20,8 +20,8 @@ const App = () => {
   return (
     <div className="App">
       <Router>
-        <Header />
         <AppContext>
+          <Header />
           <Switch>
             <Route exact path='/' component={HotReel} />
             <Route path='/my-vids' component={CurrentVideos} />

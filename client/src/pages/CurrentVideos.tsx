@@ -6,16 +6,31 @@ import { Video } from '../utility'
 import { NoVideoNotif } from './components'
 
 
-const CurrentVideos = () => {
+const CurrentVideos = ({ history }) => {
 
   const appCtx = useContext(AppCtx)
 
   if(appCtx){
 
-    const { savedVideos = [], setSavedVids, setWatchLater } = appCtx
+    const { 
+      savedVideos = [], 
+      setSavedVids, 
+      setWatchLater,
+      transitionComp: { fromComp, toComp },
+      setTransitionComp  
+    } = appCtx
+
+    const handleTransition = ({ animationName }) => {
+      if(animationName === 'fadeOut'){
+        history.push(toComp)
+        setTransitionComp({})
+      }
+    }
+
+    let wrapperClass = fromComp === '/my-vids' ? 'wrapper--transition': 'wrapper'
     
     return (
-      <div className='wrapper'>
+      <div className={wrapperClass} onAnimationEnd={handleTransition}>
         { savedVideos.length > 0 ? savedVideos.map((video:Video) => (
             <VideoCard 
               key={video.id} 

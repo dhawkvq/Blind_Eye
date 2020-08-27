@@ -6,4 +6,19 @@
   justify-content: center;
   align-items: center;
   padding: 20px;
+  animation: fadeIn .4s ease;
+
+  &--transition {
+    @extend .wrapper;
+    animation: fadeOut .4s ease forwards;
+  }
+}
+
+@keyframes fadeOut {
+  to { opacity: 0;}
+}
+
+@keyframes fadeIn {
+  from { opacity: 0;}
+  to { opacity: 1;}
 }
