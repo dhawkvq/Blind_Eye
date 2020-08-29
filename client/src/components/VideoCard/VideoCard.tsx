@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
 import './videoCard.scss'
 import logo from '../../logo.svg'
 import { storeInDB, deleteFromDB, downloadVid } from './utility'
@@ -9,7 +8,7 @@ import { useComponentVisible } from '../../hooks'
 import { PlayButton } from './components'
 
 
-const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids, savedVideos }: VidCardProps ) => {
+const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids, savedVideos, handleTransition }: VidCardProps ) => {
 
   const [videoAdded, setVideoAdded] = useState<string>('')
   const [vidError, setVidError] = useState<string>('')
@@ -72,10 +71,12 @@ const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids, savedVideos
       .catch(error => console.log('the error from deleteFromDB =>', error ))
   }
 
-  let history = useHistory()
-  
-  const handlePlay = () => {
-    history.push(`watch-video/${video.id}`)
+  const handleClick = () => {
+    if(handleTransition){
+      handleTransition(`/watch-video/${video.id}`)
+    } else {
+      console.log('there is no handle transition')
+    }
   }
 
   let notifStyles = videoAdded ? 'notification--active': 
@@ -86,7 +87,7 @@ const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids, savedVideos
 
   return(
     <div key={video.id} className='cardWrapper'>
-      <div className='picCont' onClick={handlePlay}>
+      <div className='picCont' onClick={handleClick}>
         <div className='playCover'>
           <PlayButton />  
         </div>

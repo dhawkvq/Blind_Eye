@@ -22,7 +22,10 @@ const CurrentVideos = ({ history }) => {
 
     const handleTransition = ({ animationName }) => {
       if(animationName === 'fadeOut'){
-        history.push(toComp)
+        history.push({
+          pathname: toComp,
+          state: { fromComp }
+        })
         setTransitionComp({})
       }
     }

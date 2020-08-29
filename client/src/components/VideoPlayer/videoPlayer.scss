@@ -4,9 +4,24 @@
   flex-direction: column; 
   align-items: center;
   height: 80vh;
+  animation: fadeIn 1s ease;
+
+  &--transition {
+    @extend .container;
+    animation: fadeOut 1s ease;
+  }
 
   video {
     height: 70%;
   }
     
+}
+
+@keyframes fadeIn {
+  from { opacity: 0;}
+  to { opacity: 1;}
+}
+
+@keyframes fadeOut {
+  to { opacity: 0;}
 }

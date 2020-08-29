@@ -15,25 +15,29 @@ const WatchLater = ({ history }) => {
       watchLater = [], 
       setWatchLater, 
       transitionComp: { fromComp, toComp },
-      setTransitionComp  
+      setTransitionComp,
+      handleTransition  
     } = appCtx
 
-    const handleTransition = ({ animationName }) => {
+    const handleAnimation = ({ animationName }) => {
       if(animationName === 'fadeOut'){
-        history.push(toComp)
+        history.push({
+          pathname: toComp,
+          state: { fromComp }
+        })
         setTransitionComp({})
-      }
+      } 
     }
 
     let wrapperClass = fromComp === '/watch-later' ? 'wrapper--transition': 'wrapper'
     
     return (
-      <div className={wrapperClass} onAnimationEnd={handleTransition}>
+      <div className={wrapperClass} onAnimationEnd={handleAnimation}>
         { watchLater.length ? 
           watchLater.map((video: Video) => 
             <VideoCard 
               key={video.id} 
-              {...{video, setWatchLater}} 
+              {...{ video, setWatchLater, handleTransition }} 
               watchLater 
             />
           )

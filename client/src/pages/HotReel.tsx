@@ -33,25 +33,29 @@ const HotReel = ({ history }) => {
       setWatchLater, 
       setSavedVids,
       transitionComp: { fromComp, toComp }, 
-      setTransitionComp
+      setTransitionComp,
+      handleTransition
     } = appCtx
 
-    const handleTransition = ({ animationName }) => {
+    const handleAnimation = ({ animationName }) => {
       if(animationName === 'fadeOut'){
-        history.push(toComp)
-        setTransitionComp({})
+        history.push({
+          pathname: toComp,
+          state: { fromComp }
+        })
+        setTransitionComp({}) 
       }
     }
 
     let wrapperClass = fromComp === '/' ? 'wrapper--transition': 'wrapper'
 
     return (
-      <div className={wrapperClass} onAnimationEnd={handleTransition}>
+      <div className={wrapperClass} onAnimationEnd={handleAnimation}>
         { hotReel.length > 0 && 
             hotReel.map((video: Video) => 
               <VideoCard 
                 key={video.id} 
-                {...{video, setWatchLater, setSavedVids}}
+                {...{ video, setWatchLater, setSavedVids, handleTransition }}
               /> 
             )
         } 

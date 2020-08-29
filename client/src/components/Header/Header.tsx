@@ -9,29 +9,26 @@ const Header = () => {
 
   const [activeLink, setActiveLink] = useState<string|null>(null)
 
-  const activeColor = "#61dafb"
-
   const appCtx = useContext(AppCtx)
 
   let location = useLocation()
 
   useEffect(() => {
     setActiveLink(location.pathname)
-  }, [location])
+  },[location.pathname])
 
   if(appCtx){
 
     const { handleTransition } = appCtx
     
     const handleFill = (arg:string) => {
-      if(activeLink === arg) return activeColor
+      if(activeLink === arg) return "#61dafb"
       return undefined
     }
 
     const handleClick = (path) => {
       if(location.pathname === path) return
       handleTransition(path)
-      setActiveLink(path)
     }
 
     const isActiveClass = (path) => {
