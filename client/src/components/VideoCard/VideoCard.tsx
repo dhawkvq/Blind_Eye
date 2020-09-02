@@ -109,28 +109,28 @@ const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids, savedVideos
             </p>
           </div>
           <div ref={ref} className='toolTip'>
-            <p id='tooltipText'>Menu</p>
+            <p id='tooltipText' style={{ visibility: isComponentVisible ? 'hidden': undefined }}>Menu</p>
             <img 
               src={logo} 
               alt='action button'  
               onClick={() => setIsComponentVisible(!isComponentVisible)}
-              className={isComponentVisible ? 'iconButtonActive': 'iconButton'}
+              className={isComponentVisible ? 'iconButton--active': 'iconButton'}
             />
             { isComponentVisible && 
-              <ul className='menu'>
+              <div className='menu'>
                 { watchLater ?
-                    <li onClick={removeVid}>Remove from watch later</li>
+                    <p onClick={removeVid}>Remove from watch later</p>
                     :
                     savedVideos ?
-                    <li onClick={removeVid}>Remove from saved videos</li>
+                    <p onClick={removeVid}>Remove from saved videos</p>
                     :
-                    <li onClick={saveForLater}>Watch Later</li>
+                    <p onClick={saveForLater}>Watch Later</p>
                 }
                 {
                   !savedVideos &&
-                  <li onClick={handleDownload}>Download</li>
+                  <p onClick={handleDownload}>Download</p>
                 }
-            </ul>
+            </div>
             }
           </div>
         </div>  

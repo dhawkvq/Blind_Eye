@@ -139,30 +139,30 @@
 
     #title {
       font-size: 18px;
-      // @include sm {
-      //   font-size: 16px;
-      // }
+      @include sm {
+        font-size: 16px;
+      }
 
-      // @include xs {
-      //   font-size: 14px;
-      // }
+      @include xs {
+        font-size: 14px;
+      }
     }
 
     #chanTitle {
       color: #FF8D0A;
 
-      // @include sm {
-      //   font-size: 12px;
-      // }
+      @include sm {
+        font-size: 12px;
+      }
 
       span {
-        color: white; 
+        color: grey; 
         margin-left: 20px; 
         font-size: 12px;
 
-        // @include sm {
-        //   margin-left: 10px;
-        // }
+        @include sm {
+          margin-left: 10px;
+        }
       }
 
       #pubTime {
@@ -182,21 +182,23 @@
       }
 
       .menu {
+        width: 100px;
         position: absolute; 
-        left: -35px;  
-        list-style: none;
+        display: flex;
+        flex-direction: column;
         z-index: 1; 
-        width: 100px; 
-        margin: 0px; 
-        padding: 10px; 
         background: $primary_color;
         border: 2px solid darken($primary-color, 7%);
         border-radius: 5px;
+        left: -30px;
         
-        li {
-          margin: 3px 0; 
-          padding: 2px;
-
+        @include xs {
+          left: -55px;
+        }
+        
+        p {
+          margin: 0;
+          padding: 7px;
           &:hover {
             background: lighten($primary_color, 8%);
           }
@@ -206,8 +208,8 @@
       #tooltipText{
         visibility: hidden;
         position: absolute;
-        left: 50px;
-        top: -20px;
+        left: 5px;
+        top: -30px;
         padding: 5px;
         font-size: 12px;
         background-color: grey;
@@ -217,19 +219,24 @@
       .iconButton{
         height: 50px;
         width: 50px;
-        transition: all .5s ease;
-
+        transition: all .3s ease;
+        
         &:hover {
           transform: scale(1.15);
         }
 
-      }
-
-      .iconButtonActive{
-        height: 50px;
-        width: 50px;
-        transition: all .5s ease;
-        transform: scale(1.15) rotate(90deg);
+        &--active {
+          @extend .iconButton;
+          &:hover {
+            transform: rotate(90deg) scale(1.15);
+          }
+          transform: rotate(90deg) scale(1.15);
+        }
+        
+        @include sm {
+          height: 35px;
+          width: 35px;
+        }
       }
     }
     

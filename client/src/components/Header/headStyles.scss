@@ -11,16 +11,21 @@ header {
   position: fixed;
   right: 10px;
   background-color: #282c34;
-  border-left: 1px solid #61dafb;
+  border-left: 1px solid darken(#61dafb,50%);
   z-index: 1;
   transition: all .5s ease;
 
+  @include md {
+    font-size: 18px;
+  }
+
   @include sm {
     font-size: 16px;
-    border-bottom: 1px solid #61dafb;
+    border-bottom: 1px solid darken(#61dafb,50%);
     right: 0;
+    left: 0;
     flex-direction: row;
-    width: 100%;
+    width: 100vw;
     height: 100px;
 
     svg {

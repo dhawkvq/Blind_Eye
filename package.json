@@ -8,6 +8,7 @@
     "client": " cd client && npm start",
     "build-client": " cd client && npm install && npm run build",
     "start": "node index.js",
+    "dev": "nodemon index.js & npm run client",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run build-client"
   },
   "author": "",
