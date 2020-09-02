@@ -2,7 +2,7 @@ import React from 'react'
 import { IconProps } from './typeDefs'
 
 const PopularIcon = ({ fill = 'white'}: IconProps ) => (
-    <svg style={{ height: 25, width: 25, fill }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <svg height='30' width='30' fill={fill} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
       <path d="M369.215,159.814c-91.389-55.601-48.533-134.078-46.694-137.34c2.668-4.642,2.66-10.353-0.022-14.987
         C319.818,2.853,314.87,0,309.516,0c-47.043,0-83.881,13.366-109.49,39.728c-43.759,45.045-41.729,115.152-40.863,145.09
         c0.096,3.316,0.179,6.182,0.179,8.31c0,22.228,3.566,42.749,6.713,60.854c2.028,11.667,3.779,21.743,4.09,29.665

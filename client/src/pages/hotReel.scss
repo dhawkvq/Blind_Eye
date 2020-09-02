@@ -1,18 +1,28 @@
+@import '../mixins.scss';
+
 .wrapper {
-  max-width: 100vw; 
-  min-height: 80vh;
+  height: 100%;
+  width: 100%;
   display: flex; 
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
   animation: fadeIn .4s ease;
+  border: 1px dashed orange;
+}
 
-  &--transition {
-    @extend .wrapper;
-    animation: fadeOut .4s ease forwards;
+.full {
+  @extend .wrapper;
+  @include sm {
+    padding-top: 100px;
   }
 }
+
+.transition {
+  @extend .full;
+  animation: fadeOut .4s ease forwards;
+}
+
 
 @keyframes fadeOut {
   to { opacity: 0;}

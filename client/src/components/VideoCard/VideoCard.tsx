@@ -99,7 +99,7 @@ const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids, savedVideos
         <div className='picHousing'>
           <img src={channelOwnerPic.url}  alt='channel owner thumbnail pic'/>
         </div>
-        <div className='videoDetails' >
+        <div className='videoDetails'> 
           <div style={{ width:'90%'}}>
             <p id='title'>{title}</p> 
             <p id='chanTitle' >

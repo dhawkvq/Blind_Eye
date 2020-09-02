@@ -47,7 +47,10 @@ const HotReel = ({ history }) => {
       }
     }
 
-    let wrapperClass = fromComp === '/' ? 'wrapper--transition': 'wrapper'
+    let wrapperClass = 
+      fromComp === '/' ? 'wrapper transition' : 
+      hotReel.length > 1 ? 'wrapper full':
+      'wrapper'
 
     return (
       <div className={wrapperClass} onAnimationEnd={handleAnimation}>

@@ -30,7 +30,10 @@ const CurrentVideos = ({ history }) => {
       }
     }
 
-    let wrapperClass = fromComp === '/my-vids' ? 'wrapper--transition': 'wrapper'
+    let wrapperClass = 
+      fromComp === '/my-vids' ? 'wrapper transition' : 
+        savedVideos.length > 1 ? 'wrapper full':
+        'wrapper'
     
     return (
       <div className={wrapperClass} onAnimationEnd={handleTransition}>

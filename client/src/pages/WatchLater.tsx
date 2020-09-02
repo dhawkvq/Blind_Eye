@@ -29,8 +29,12 @@ const WatchLater = ({ history }) => {
       } 
     }
 
-    let wrapperClass = fromComp === '/watch-later' ? 'wrapper--transition': 'wrapper'
+    let wrapperClass = 
+      fromComp === '/watch-later' ? 'wrapper transition' : 
+          watchLater.length > 1 ? 'wrapper full':
+          'wrapper'
     
+          
     return (
       <div className={wrapperClass} onAnimationEnd={handleAnimation}>
         { watchLater.length ? 
