@@ -11,11 +11,12 @@ const HotReel = ({ history }) => {
 
   useEffect(() => {
     if(appCtx){
-      const {setHotReel} = appCtx
+      
+      const { handleNextPage } = appCtx
 
       const handleScroll = () => {
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-          setHotReel(prevState => [...prevState,...prevState.slice(0,5)])
+          handleNextPage()
         }
       }
   

@@ -34,10 +34,13 @@ export const createEndpoint = (action: Action): string => {
   if(type === 'MULTI_VID' || type === 'CHANNEL_INFO'){
     if(!data)throw new Error(`data property required when passing action type: ${type}`)
     if(typeof(data) !== 'string') throw new Error('data arg on action must be of type string')
-  } 
+  }else if(type === 'POPULAR' && data && typeof(data) !== 'string' ){
+    throw new Error('data arg on action must be of type string')
+  }
 
   switch(type){
     case 'POPULAR':
+      if(data) return `${REACT_APP_API_ENDPOINT}&pageToken=${data}&key=${REACT_APP_API_KEY}`
       return `${REACT_APP_API_ENDPOINT}&key=${REACT_APP_API_KEY}`
 
     case 'MULTI_VID':
@@ -180,19 +183,20 @@ export const distillVidInfo = (videos: VidWithThumbs[]): FormattedVideo[] => {
 }
 
 
-export const fetchInfo = async () => {
+export const fetchInfo = async (nextPage?:string) => {
 
-  if(NODE_ENV === 'development'){
-    return distillVidInfo(popularList)
-  }
+  // if(NODE_ENV === 'development'){
+  //   return distillVidInfo(popularList)
+  // }
 
   try {
-    const res = await fetch(createEndpoint({ type: 'POPULAR' }))
+    const res = await fetch(createEndpoint({ type: 'POPULAR', data: nextPage }))
     if(!res.ok) throw new Error('failed to fetchInfo')
-    const { items } = await res.json()
+    const { items, nextPageToken } = await res.json()
     if (!items) throw new Error('items came up empty')
     try {
-      return await channelOwnerInfo(items)
+      const fullVidInfo = await channelOwnerInfo(items)
+      return { fullVidInfo, nextPageToken }
     } 
     catch (error) {throw error }
   }
@@ -213,6 +217,7 @@ export const downloadVideo = async (id:string) => {
       let contentLength
 
       if(stream.headers){
+        console.log('stream headers =>', stream.headers)
         contentLength = stream.headers.get('Content-Length')
       }
 

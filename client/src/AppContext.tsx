@@ -21,6 +21,7 @@ type ContextTypes = {
   setSavedVids: React.Dispatch<React.SetStateAction<Video[]>>;
   setHotReel: React.Dispatch<React.SetStateAction<Video[]>>;
   setWatchLater: React.Dispatch<React.SetStateAction<Video[]>>;
+  handleNextPage: () => void;
 }
 
 export const AppCtx = React.createContext<ContextTypes | undefined>(undefined)
@@ -33,10 +34,14 @@ const AppContext = (props) => {
   const [hotReel, setHotReel] = useState<Video[]>([])
   const [watchLater, setWatchLater] = useState<Video[]>([])
   const [transitionComp, setTransitionComp] = useState<TransitionState>({})
+  const [nextPage, setNextPage] = useState<string|undefined>()
 
   useEffect(() => {
     fetchInfo()
-      .then(setHotReel)
+      .then(({ fullVidInfo, nextPageToken }) => {
+        setHotReel(fullVidInfo)
+        setNextPage(nextPageToken)
+      })
       .catch(error => console.log('error from fetch info =>', error ))
 
     grabDB('savedVideos')
@@ -57,6 +62,19 @@ const AppContext = (props) => {
     })
   }
 
+  const handleNextPage = () => {
+    if(!nextPage){
+      console.log('there is no next page!')
+      return
+    }
+    fetchInfo(nextPage)
+      .then(({ fullVidInfo, nextPageToken }) => {
+        setHotReel((prevState:any) => [...prevState,...fullVidInfo])
+        setNextPage(nextPageToken)
+      })
+      .catch(error => console.log('error from handleNextPage =>', error ))
+  }
+
   return(
     <AppCtx.Provider 
       value={{ 
@@ -64,7 +82,7 @@ const AppContext = (props) => {
         hotReel, setHotReel, 
         watchLater, setWatchLater,
         transitionComp, setTransitionComp,
-        handleTransition
+        handleTransition, handleNextPage
       }}
     >
       { props.children }
