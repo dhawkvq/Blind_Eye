@@ -5,7 +5,7 @@ import {
   Resolutions, 
   VidWithThumbs,
   RawVidInfo, 
-  FormattedVideo, 
+  Video,
   Thumbnail, 
   ChanOwnerRes 
 } from './typeDefs'
@@ -77,12 +77,12 @@ export const formatDuration = (time: string): string => {
 
   const formatted = dayjs.duration(time)
 
-  const validDuration = Object.keys(formatted['$d'])
+  const validDuration = Object.keys(formatted['$d']) 
 
   if(!validDuration.length) throw new Error('not a valid date ISO 8601 date time passed')
   
 
-  let { hours, minutes, seconds } = formatted['$d']
+  let { hours, minutes = 0, seconds = 0 } = formatted['$d']
   if(+seconds < 10){
     seconds = `0${seconds}`
   }
@@ -149,7 +149,7 @@ export const filterThumbPic = (thumbnails: Resolutions ): Thumbnail => {
 }
 
 
-export const distillVidInfo = (videos: VidWithThumbs[]): FormattedVideo[] => {
+export const distillVidInfo = (videos: VidWithThumbs[]): Video[] => {
 
   return videos.map(video => { 
 

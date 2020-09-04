@@ -35,7 +35,9 @@ const HotReel = ({ history }) => {
       setSavedVids,
       transitionComp: { fromComp, toComp }, 
       setTransitionComp,
-      handleTransition
+      handleTransition,
+      contentEnded,
+      loading
     } = appCtx
 
     const handleAnimation = ({ animationName }) => {
@@ -62,7 +64,18 @@ const HotReel = ({ history }) => {
                 {...{ video, setWatchLater, setSavedVids, handleTransition }}
               /> 
             )
+        }
+        {
+          loading && 
+          <div style={{ border: '1px dashed yellow', height: 400, width: '70%', textAlign: "center"}}>
+            <p style={{ marginTop: 'auto', marginBottom: 'auto' }}>Loading</p>
+          </div>
         } 
+        {contentEnded && 
+          <div style={{ border: '1px dashed white', height: 400, width: '70%', textAlign: "center"}}>
+            <p style={{ marginTop: 'auto', marginBottom: 'auto' }}>NO MORE!</p>
+          </div>
+        }
       </div>
     )
   }

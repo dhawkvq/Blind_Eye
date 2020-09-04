@@ -61,18 +61,6 @@ export interface VidWithThumbs extends RawVidInfo {
   channelThumbs: Resolutions;
 }
 
-export type FormattedVideo = {
-  id: string;
-  title: string;
-  channelId: string;
-  channelTitle: string;
-  thumbnailPic: Thumbnail;
-  channelOwnerPic: Thumbnail;
-  vidTime: string;
-  viewCount: string;
-  publishTime: string;
-}
-
 export type ChanOwnerRes = {
   id: string;
   snippet:{

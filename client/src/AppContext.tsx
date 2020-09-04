@@ -22,6 +22,8 @@ type ContextTypes = {
   setHotReel: React.Dispatch<React.SetStateAction<Video[]>>;
   setWatchLater: React.Dispatch<React.SetStateAction<Video[]>>;
   handleNextPage: () => void;
+  contentEnded: boolean;
+  loading: boolean;
 }
 
 export const AppCtx = React.createContext<ContextTypes | undefined>(undefined)
@@ -35,6 +37,8 @@ const AppContext = (props) => {
   const [watchLater, setWatchLater] = useState<Video[]>([])
   const [transitionComp, setTransitionComp] = useState<TransitionState>({})
   const [nextPage, setNextPage] = useState<string|undefined>()
+  const [contentEnded, setContentEnded] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
     fetchInfo()
@@ -51,6 +55,7 @@ const AppContext = (props) => {
     grabDB('watchLater')
       .then(setWatchLater)  
       .catch(error => console.log(error))
+
   }, [])
 
   let location = useLocation()
@@ -63,16 +68,23 @@ const AppContext = (props) => {
   }
 
   const handleNextPage = () => {
-    if(!nextPage){
-      console.log('there is no next page!')
-      return
-    }
+
+    if(contentEnded || !nextPage) return 
+
+    setLoading(true)
+
     fetchInfo(nextPage)
       .then(({ fullVidInfo, nextPageToken }) => {
-        setHotReel((prevState:any) => [...prevState,...fullVidInfo])
+        setHotReel(prevState => [...prevState,...fullVidInfo])
         setNextPage(nextPageToken)
+        setContentEnded(true)
+        setLoading(false)
       })
-      .catch(error => console.log('error from handleNextPage =>', error ))
+      .catch(error => {
+        console.log('error from handleNextPage =>', error )
+        setLoading(false)
+      })
+
   }
 
   return(
@@ -82,7 +94,8 @@ const AppContext = (props) => {
         hotReel, setHotReel, 
         watchLater, setWatchLater,
         transitionComp, setTransitionComp,
-        handleTransition, handleNextPage
+        handleTransition, handleNextPage,
+        contentEnded, loading
       }}
     >
       { props.children }
