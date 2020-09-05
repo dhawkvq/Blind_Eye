@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import './videoCard.scss'
-import logo from '../../logo.svg'
 import { storeInDB, deleteFromDB, downloadVid } from './utility'
 import { VidCardProps } from './typeDefs'
-import { Video, formatDuration, formatViewCount, formatPublishDate } from '../../utility'
+import { formatDuration, formatViewCount, formatPublishDate } from '../../utility'
 import { useComponentVisible } from '../../hooks'
-import { PlayButton } from './components'
+import { PlayButton, logo } from './components'
 
 
 const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids, savedVideos, handleTransition }: VidCardProps ) => {
@@ -30,7 +29,7 @@ const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids, savedVideos
     storeInDB(video)
     .then(data => {
       setVideoAdded('Video Added!')
-      setWatchLater((prevState: Video[]) => [...prevState,data])
+      setWatchLater(prevState => [...prevState,data])
     })
     .catch(error => setVidError(error.message))
 
@@ -44,7 +43,7 @@ const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids, savedVideos
     downloadVid(video)
       .then(savedVid => {
         if(setSavedVids){
-          setSavedVids((prevState: Video[]) => [savedVid, ...prevState])
+          setSavedVids(prevState => [savedVid, ...prevState])
         }
       })
       .catch(error => console.log('error from handleDownload =>', error ))
@@ -60,10 +59,10 @@ const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids, savedVideos
     deleteFromDB(removalObj)
       .then(() => {
         if(savedVideos && setSavedVids){
-          setSavedVids((prevState: Video[]) => 
+          setSavedVids(prevState => 
             prevState.filter(({ id }) => id !== video.id ))
         } else {
-          setWatchLater((prevState: Video[]) => 
+          setWatchLater(prevState => 
             prevState.filter(({ id }) => id !== video.id ))
         }
 
@@ -118,11 +117,8 @@ const VideoCard = ({ video, setWatchLater, watchLater, setSavedVids, savedVideos
             />
             { isComponentVisible && 
               <div className='menu'>
-                { watchLater ?
-                    <p onClick={removeVid}>Remove from watch later</p>
-                    :
-                    savedVideos ?
-                    <p onClick={removeVid}>Remove from saved videos</p>
+                { watchLater || savedVideos ?
+                    <p onClick={removeVid}>Remove</p>
                     :
                     <p onClick={saveForLater}>Watch Later</p>
                 }

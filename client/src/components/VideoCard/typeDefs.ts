@@ -1,9 +1,9 @@
 import {  Video } from '../../utility'
 
 export type VidCardProps = {
-  setWatchLater: (arg: any) => void;
-  setSavedVids?: (arg: any) => void;
-  handleTransition?: (arg:any) => void;
+  setWatchLater: React.Dispatch<React.SetStateAction<Video[]>>;
+  setSavedVids?: React.Dispatch<React.SetStateAction<Video[]>>;
+  handleTransition?: (path:string) => void;
   watchLater?: boolean;
   savedVideos?: boolean;
   video: Video;

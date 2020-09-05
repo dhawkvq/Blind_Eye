@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useContext } from 'react'
-import { AppCtx } from '../../AppContext'
-import './videoPlayer.scss'
-import { grabVidById } from '../../utility'
+import { AppCtx } from '../context'
+import './pageStyles.scss'
+import { grabVidById } from '../utility'
 
 
 const VideoPlayer = ({ match, history }) => {

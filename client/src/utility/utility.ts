@@ -25,6 +25,8 @@ const {
   NODE_ENV
 } = process.env
 
+export const inDevelopment = NODE_ENV === 'development'
+
 
 export const createEndpoint = (action: Action): string => {
   if(!action) throw new Error('Action object must be passed to create endpoint')
@@ -182,12 +184,17 @@ export const distillVidInfo = (videos: VidWithThumbs[]): Video[] => {
 
 }
 
+type InfoReturn = {
+  fullVidInfo: Video[];
+  nextPageToken?: string;
+}
 
-export const fetchInfo = async (nextPage?:string) => {
 
-  // if(NODE_ENV === 'development'){
-  //   return distillVidInfo(popularList)
-  // }
+export const fetchInfo = async (nextPage?:string): Promise<InfoReturn> => {
+
+  if(inDevelopment){
+    return { fullVidInfo: distillVidInfo(popularList) }
+  }
 
   try {
     const res = await fetch(createEndpoint({ type: 'POPULAR', data: nextPage }))

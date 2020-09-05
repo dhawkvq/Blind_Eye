@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { AppCtx } from '../../AppContext'
+import { AppCtx } from '../../context'
 import './headStyles.scss'
 import { PopularIcon, WatchLaterIcon, SavedVidsIcon } from './components'
 

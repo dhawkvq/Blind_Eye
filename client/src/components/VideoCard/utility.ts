@@ -18,7 +18,7 @@ const createDuration = ( day: dayjs.Dayjs ) => {
   .toISOString()
 }
 
-export const storeInDB = async (video: Video) => {
+export const storeInDB = async (video: Video): Promise<Video> => {
 
   const currentDay = dayjs()
   const vidForLater = {
@@ -33,7 +33,8 @@ export const storeInDB = async (video: Video) => {
     if(!ok) throw new Error('video did not properly save to watchLater DB')
 
     try {
-      return await WLDB.get(id)
+      const vidInfo:Video = await WLDB.get(id)
+      return vidInfo
     }
     catch(error) {
       throw new Error('problem retrieving video from watchLater DB')
@@ -57,16 +58,12 @@ export const deleteFromDB = async ({ database, id }: DeleteArgs) => {
     try {
       await pouch.remove(doc)
     } 
-    catch (error) {
-      throw error
-    }
+    catch (error) { throw error}
   }
-  catch(error){
-    throw error
-  }
+  catch(error){ throw error }
 }
 
-export const downloadVid = async (video:Video)=> {
+export const downloadVid = async (video:Video): Promise<Video> => {
   try{
     const vidData = await downloadVideo(video.id)
     if (!vidData) throw new Error('video came back undefined')
@@ -81,7 +78,8 @@ export const downloadVid = async (video:Video)=> {
       if(!ok) throw new Error('problem placing new video in db')
 
       try {
-        return await db.get(id)
+        const vidInfo:Video = await db.get(id)
+        return vidInfo
       } 
       catch (error) { throw error }
       

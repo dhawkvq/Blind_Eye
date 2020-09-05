@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
-import './hotReel.scss'
-import { AppCtx } from '../AppContext'
-import { VideoCard } from '../components'
+import './pageStyles.scss'
+import { AppCtx } from '../context'
+import { VideoCard, NoVideoNotif } from '../components'
 import { Video } from '../utility'
-import { NoVideoNotif } from './components'
+
 
 const WatchLater = ({ history }) => {
 

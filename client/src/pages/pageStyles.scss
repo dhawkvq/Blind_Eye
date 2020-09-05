@@ -1,0 +1,44 @@
+@import '../styles/mixins.scss';
+@import '../styles/animations.scss';
+
+
+.wrapper {
+  min-height: 100vh;
+  width: 100%;
+  display: flex; 
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn .4s ease;
+}
+
+.full {
+  @extend .wrapper;
+  @include sm {
+    padding-top: 100px;
+  }
+}
+
+.transition {
+  @extend .full;
+  animation: fadeOut .4s ease forwards; 
+}
+
+.container {
+  border: 1px dashed yellow; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center;
+  height: 80vh;
+  animation: fadeIn 1s ease;
+
+  &--transition {
+    @extend .container;
+    animation: fadeOut 1s ease;
+  }
+
+  video {
+    height: 70%; 
+  }
+    
+}

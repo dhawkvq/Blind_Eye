@@ -4,11 +4,10 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import './App.css';
 import { getStorageInfo } from './utility'
-import AppContext from './AppContext';
-import { CurrentVideos, HotReel, WatchLater } from './pages'
-import { Header, VideoPlayer } from './components'
+import { AppContext } from './context';
+import { CurrentVideos, HotReel, WatchLater, VideoPlayer } from './pages'
+import { Header } from './components'
 
 
 const App = () => {  

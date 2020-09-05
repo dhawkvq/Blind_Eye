@@ -1,9 +1,7 @@
 import React, { useContext } from 'react'
-import './hotReel.scss'
-import { AppCtx } from '../AppContext'
-import { VideoCard } from '../components'
-import { Video } from '../utility'
-import { NoVideoNotif } from './components'
+import './pageStyles.scss'
+import { AppCtx } from '../context'
+import { VideoCard, NoVideoNotif } from '../components'
 
 
 const CurrentVideos = ({ history }) => {
@@ -37,7 +35,7 @@ const CurrentVideos = ({ history }) => {
     
     return (
       <div className={wrapperClass} onAnimationEnd={handleTransition}>
-        { savedVideos.length > 0 ? savedVideos.map((video:Video) => (
+        { savedVideos.length > 0 ? savedVideos.map(video => (
             <VideoCard 
               key={video.id} 
               {...{video, setSavedVids, setWatchLater}}

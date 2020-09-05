@@ -3,39 +3,20 @@ import { useLocation } from 'react-router-dom'
 import { 
   grabDB, 
   Video,
-  fetchInfo
-} from './utility'
+  fetchInfo,
+  inDevelopment
+} from '../utility'
+import{ TransitionState, ContextTypes } from './typeDefs'
 
-type TransitionState = {
-  fromComp?:string;
-  toComp?:string;
-}
-
-type ContextTypes = {
-  savedVideos: Video[];
-  hotReel: Video[];
-  watchLater: Video[];
-  transitionComp: TransitionState;
-  setTransitionComp: React.Dispatch<React.SetStateAction<TransitionState>>;
-  handleTransition: (path:string) => void;
-  setSavedVids: React.Dispatch<React.SetStateAction<Video[]>>;
-  setHotReel: React.Dispatch<React.SetStateAction<Video[]>>;
-  setWatchLater: React.Dispatch<React.SetStateAction<Video[]>>;
-  handleNextPage: () => void;
-  contentEnded: boolean;
-  loading: boolean;
-}
 
 export const AppCtx = React.createContext<ContextTypes | undefined>(undefined)
 
-
 const AppContext = (props) => {
-
   
   const [savedVideos, setSavedVids] = useState<Video[]>([])
   const [hotReel, setHotReel] = useState<Video[]>([])
   const [watchLater, setWatchLater] = useState<Video[]>([])
-  const [transitionComp, setTransitionComp] = useState<TransitionState>({})
+  const [transitionComp, setTransitionComp] = useState<TransitionState>({}) 
   const [nextPage, setNextPage] = useState<string|undefined>()
   const [contentEnded, setContentEnded] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
@@ -68,6 +49,11 @@ const AppContext = (props) => {
   }
 
   const handleNextPage = () => {
+
+    if(inDevelopment){
+      setHotReel(prevState => [...prevState, ...prevState.slice(0,5)])
+      return
+    }
 
     if(contentEnded || !nextPage) return 
 

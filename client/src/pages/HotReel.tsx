@@ -1,8 +1,7 @@
 import React, { useContext, useEffect } from 'react'
-import './hotReel.scss'
-import { AppCtx } from '../AppContext'
+import './pageStyles.scss'
+import { AppCtx } from '../context'
 import { VideoCard } from '../components'
-import { Video } from '../utility'
 
 
 const HotReel = ({ history }) => {
@@ -55,10 +54,12 @@ const HotReel = ({ history }) => {
       hotReel.length > 1 ? 'wrapper full':
       'wrapper'
 
+    let showContent = loading || contentEnded
+
     return (
       <div className={wrapperClass} onAnimationEnd={handleAnimation}>
         { hotReel.length > 0 && 
-            hotReel.map((video: Video) => 
+            hotReel.map(video => 
               <VideoCard 
                 key={video.id} 
                 {...{ video, setWatchLater, setSavedVids, handleTransition }}
@@ -66,16 +67,11 @@ const HotReel = ({ history }) => {
             )
         }
         {
-          loading && 
+          showContent && 
           <div style={{ border: '1px dashed yellow', height: 400, width: '70%', textAlign: "center"}}>
-            <p style={{ marginTop: 'auto', marginBottom: 'auto' }}>Loading</p>
+            <p style={{ marginTop: 'auto', marginBottom: 'auto' }}>{ loading ? 'Loading' : 'NO MORE!'}</p>
           </div>
         } 
-        {contentEnded && 
-          <div style={{ border: '1px dashed white', height: 400, width: '70%', textAlign: "center"}}>
-            <p style={{ marginTop: 'auto', marginBottom: 'auto' }}>NO MORE!</p>
-          </div>
-        }
       </div>
     )
   }
