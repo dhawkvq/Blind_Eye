@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import './pageStyles.scss'
 import { AppCtx } from '../context'
-import { VideoCard } from '../components'
+import { VideoCard, NoVideoNotif } from '../components'
 
 
 const HotReel = ({ history }) => {
@@ -54,7 +54,7 @@ const HotReel = ({ history }) => {
       hotReel.length > 1 ? 'wrapper full':
       'wrapper'
 
-    let showContent = loading || contentEnded
+    let notify = loading || contentEnded
 
     return (
       <div className={wrapperClass} onAnimationEnd={handleAnimation}>
@@ -67,9 +67,14 @@ const HotReel = ({ history }) => {
             )
         }
         {
-          showContent && 
-          <div style={{ border: '1px dashed yellow', height: 400, width: '70%', textAlign: "center"}}>
-            <p style={{ marginTop: 'auto', marginBottom: 'auto' }}>{ loading ? 'Loading' : 'NO MORE!'}</p>
+          notify && 
+          <div className='notifCont'>
+            {
+              loading ?
+              <p>Loading......</p>
+              :
+              <NoVideoNotif message='The End' />
+            }
           </div>
         } 
       </div>

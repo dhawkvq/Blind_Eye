@@ -14,6 +14,9 @@
 
 .full {
   @extend .wrapper;
+
+  padding: 25px 0;
+
   @include sm {
     padding-top: 100px;
   }
@@ -22,6 +25,19 @@
 .transition {
   @extend .full;
   animation: fadeOut .4s ease forwards; 
+}
+
+.notifCont {
+  display: flex; 
+  width: 50%; 
+  justify-content: center; 
+  align-items: center; 
+  padding: 30px 0;
+
+  p {
+    font-size: 20px; 
+    color: white; 
+  }
 }
 
 .container {
