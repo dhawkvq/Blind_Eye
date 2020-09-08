@@ -4,45 +4,41 @@ import { AppCtx } from '../context'
 import { VideoCard, NoVideoNotif } from '../components'
 
 
-const WatchLater = () => {
+const SavedVideos = () => {
 
   const appCtx = useContext(AppCtx)
 
   if(appCtx){
 
     const { 
-      watchLater = [], 
+      savedVideos = [], 
       transitionComp: { fromComp },
       handleRouteChange
     } = appCtx
 
-
     let wrapperClass = 
-      fromComp === '/watch-later' && watchLater.length > 1 ? 'wrapper transitionFull' :
-      fromComp === 'watch-later' ? 'wrapper transition' : 
-      watchLater.length > 1 ? 'wrapper full' :
+      fromComp === '/my-vids' && savedVideos.length > 1 ? 'wrapper transitionFull' : 
+      fromComp === '/my-vids' ? 'wrapper transition' :
+      savedVideos.length > 1 ? 'wrapper full' :
       'wrapper'
     
-          
     return (
       <div className={wrapperClass} onAnimationEnd={handleRouteChange}>
-        { watchLater.length ? 
-          watchLater.map(video => 
+        { savedVideos.length > 0 ? savedVideos.map(video => (
             <VideoCard 
               key={video.id} 
               ctx={appCtx}
               video={video}
-              watchLaterFlag 
+              savedVideosFlag
             />
-          )
+          ))
           :
-          <NoVideoNotif 
-            message='You currently have no videos to watch later'
-          />
+          <NoVideoNotif message='You currently have no saved videos'/>
         }
       </div>
     )
   }
+
 }
 
-export default WatchLater
+export default SavedVideos

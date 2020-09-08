@@ -19,7 +19,7 @@ const Header = () => {
 
   if(appCtx){
 
-    const { handleTransition } = appCtx
+    const { setTransitionComp } = appCtx
     
     const handleFill = (arg:string) => {
       if(activeLink === arg) return "#61dafb"
@@ -28,7 +28,10 @@ const Header = () => {
 
     const handleClick = (path) => {
       if(location.pathname === path) return
-      handleTransition(path)
+      setTransitionComp({
+        fromComp: location.pathname,
+        toComp: path
+      })
     }
 
     const isActiveClass = (path) => {

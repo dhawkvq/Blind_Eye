@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import { getStorageInfo } from './utility'
 import { AppContext } from './context';
-import { CurrentVideos, HotReel, WatchLater, VideoPlayer } from './pages'
+import { SavedVideos, HotReel, WatchLater, VideoPlayer } from './pages'
 import { Header } from './components'
 
 
@@ -23,7 +23,7 @@ const App = () => {
           <Header />
           <Switch>
             <Route exact path='/' component={HotReel} />
-            <Route path='/my-vids' component={CurrentVideos} />
+            <Route path='/my-vids' component={SavedVideos} />
             <Route path='/watch-later' component={WatchLater} />
             <Route path='/watch-video/:id' component={VideoPlayer} />
           </Switch>

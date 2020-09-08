@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { 
   grabDB, 
   Video,
@@ -39,13 +39,17 @@ const AppContext = (props) => {
 
   }, [])
 
-  let location = useLocation()
+  let history = useHistory()
 
-  const handleTransition = (path:string) => {
-    setTransitionComp({
-      fromComp: location.pathname,
-      toComp: path
-    })
+  const handleRouteChange = ({ animationName }:{ animationName:string }) => {
+    if(animationName === 'fadeOut'){
+      const { fromComp, toComp, data } = transitionComp
+      history.push({
+        pathname: toComp,
+        state: { fromComp, data }
+      })
+      setTransitionComp({})
+    }
   }
 
   const handleNextPage = () => {
@@ -80,7 +84,7 @@ const AppContext = (props) => {
         hotReel, setHotReel, 
         watchLater, setWatchLater,
         transitionComp, setTransitionComp,
-        handleTransition, handleNextPage,
+        handleNextPage, handleRouteChange,
         contentEnded, loading
       }}
     >

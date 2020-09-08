@@ -4,7 +4,7 @@ import { AppCtx } from '../context'
 import { VideoCard, NoVideoNotif } from '../components'
 
 
-const HotReel = ({ history }) => {
+const HotReel = () => {
 
   const appCtx = useContext(AppCtx)
 
@@ -30,39 +30,28 @@ const HotReel = ({ history }) => {
 
     const { 
       hotReel = [], 
-      setWatchLater, 
-      setSavedVids,
-      transitionComp: { fromComp, toComp }, 
-      setTransitionComp,
-      handleTransition,
+      transitionComp: { fromComp }, 
+      handleRouteChange,
       contentEnded,
       loading
     } = appCtx
 
-    const handleAnimation = ({ animationName }) => {
-      if(animationName === 'fadeOut'){
-        history.push({
-          pathname: toComp,
-          state: { fromComp }
-        })
-        setTransitionComp({}) 
-      }
-    }
-
     let wrapperClass = 
-      fromComp === '/' ? 'wrapper transition' : 
+      fromComp === '/' && hotReel.length > 1 ? 'wrapper transitionFull' : 
+      fromComp === '/' ? 'wrapper tansition':
       hotReel.length > 1 ? 'wrapper full':
       'wrapper'
 
     let notify = loading || contentEnded
 
     return (
-      <div className={wrapperClass} onAnimationEnd={handleAnimation}>
+      <div className={wrapperClass} onAnimationEnd={handleRouteChange}>
         { hotReel.length > 0 && 
             hotReel.map(video => 
               <VideoCard 
                 key={video.id} 
-                {...{ video, setWatchLater, setSavedVids, handleTransition }}
+                ctx={appCtx}
+                video={video}
               /> 
             )
         }
