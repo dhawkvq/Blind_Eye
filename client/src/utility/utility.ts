@@ -288,9 +288,10 @@ export const grabDB = async (database:string) => {
   }
 }
 
-export const grabVidById = async(id:string) => {
+export const grabVidById = async(id:string): Promise<Video> => {
   try{
-    return await db.get(id)
+    const vidInfo:Video = await db.get(id)
+    return vidInfo
   }
   catch(error){ throw error }
 }
