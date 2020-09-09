@@ -6,3 +6,12 @@
 @keyframes fadeOut {
   to { opacity: 0;}
 }
+
+@keyframes slideIn {
+  from{ transform: translateY(100px); opacity: 0;}
+  to { transform: translateY(0px); opacity: 1;}
+}
+
+@keyframes slideOut {
+  to { transform: translateY(100px); opacity: 0;}
+}

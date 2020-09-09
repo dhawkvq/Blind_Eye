@@ -6,7 +6,7 @@ import {
   fetchInfo,
   inDevelopment
 } from '../utility'
-import{ TransitionState, ContextTypes } from './typeDefs'
+import{ TransitionState, ContextTypes, NotifState } from './typeDefs'
 
 
 export const AppCtx = React.createContext<ContextTypes | undefined>(undefined)
@@ -20,6 +20,7 @@ const AppContext = (props) => {
   const [nextPage, setNextPage] = useState<string|undefined>()
   const [contentEnded, setContentEnded] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
+  const [notification, setNotification] = useState<NotifState|undefined>()
 
   useEffect(() => {
     fetchInfo()
@@ -38,6 +39,7 @@ const AppContext = (props) => {
       .catch(error => console.log(error))
 
   }, [])
+
 
   let history = useHistory()
 
@@ -85,7 +87,8 @@ const AppContext = (props) => {
         watchLater, setWatchLater,
         transitionComp, setTransitionComp,
         handleNextPage, handleRouteChange,
-        contentEnded, loading
+        contentEnded, loading,
+        notification, setNotification
       }}
     >
       { props.children }

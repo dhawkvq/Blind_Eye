@@ -19,7 +19,7 @@ const WatchLater = () => {
 
     let wrapperClass = 
       fromComp === '/watch-later' && watchLater.length > 1 ? 'wrapper transitionFull' :
-      fromComp === 'watch-later' ? 'wrapper transition' : 
+      fromComp === '/watch-later' ? 'wrapper transition' : 
       watchLater.length > 1 ? 'wrapper full' :
       'wrapper'
     

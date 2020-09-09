@@ -20,11 +20,15 @@ const VideoInfo = ({ video, ctx, watchLaterFlag, savedVideosFlag }: InfoProps ) 
 
   const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false)
 
-  const { setSavedVids, setWatchLater } = ctx
+  const { setSavedVids, setWatchLater, setNotification } = ctx
 
   const saveForLater = () => { 
     storeInDB(video)
     .then(data => {
+      setNotification({ 
+        id: video.id, 
+        message: 'Video added to watch later!'
+      })
       setWatchLater(prevState => [...prevState,data])
     })
     .catch(error => console.log(error))

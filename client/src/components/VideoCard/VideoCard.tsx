@@ -5,6 +5,7 @@ import VideoInfo from './VideoInfo'
 import { formatDuration, Video } from '../../utility'
 import { ContextTypes } from '../../context/typeDefs'
 import { useLocation } from 'react-router-dom'
+import NotificationBar from '../NotificationBar/NotificationBar'
 
 
 type VidCardProps = {
@@ -25,8 +26,18 @@ const VideoCard = ({ video, ctx, watchLaterFlag, savedVideosFlag }: VidCardProps
     data: video
   })
 
+  let showMessage = ctx.notification && ctx.notification.id === video.id
+  let message = ctx.notification && ctx.notification.message
+
   return(
-    <div key={video.id} className='cardWrapper'>
+    <div key={video.id} className='cardWrapper'> 
+      {
+        showMessage && 
+        <NotificationBar 
+          message={message} 
+          clearNotification={() => ctx.setNotification(undefined)}
+        />
+      }
       <div 
         className='picCont' 
         onClick={handleClick}

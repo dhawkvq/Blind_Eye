@@ -6,6 +6,11 @@ export type TransitionState = {
   data?:Video;
 }
 
+export type NotifState = {
+  id: string;
+  message: string
+}
+
 export type ContextTypes = {
   savedVideos: Video[];
   hotReel: Video[];
@@ -19,4 +24,6 @@ export type ContextTypes = {
   handleRouteChange: ({ animationName }:{ animationName: string }) => void;
   contentEnded: boolean;
   loading: boolean;
+  notification: NotifState|undefined;
+  setNotification: React.Dispatch<React.SetStateAction<NotifState|undefined>>;
 }
