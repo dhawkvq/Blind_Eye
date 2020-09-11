@@ -20,7 +20,7 @@ const VideoInfo = ({ video, ctx, watchLaterFlag, savedVideosFlag }: InfoProps ) 
 
   const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false)
 
-  const { setSavedVids, setWatchLater, setNotification } = ctx
+  const { setSavedVids, setWatchLater, setNotification, setDownloading } = ctx
 
   const saveForLater = () => { 
     storeInDB(video)
@@ -61,13 +61,17 @@ const VideoInfo = ({ video, ctx, watchLaterFlag, savedVideosFlag }: InfoProps ) 
 
     setIsComponentVisible(false)
 
-    downloadVid(video)
+    setDownloading({ videoId: video.id })
+
+    downloadVid(video, setDownloading)
       .then(savedVid => {
-        if(setSavedVids){
-          setSavedVids(prevState => [savedVid, ...prevState])
-        }
+        setSavedVids(prevState => [savedVid, ...prevState])
+        setDownloading(undefined)
       })
-      .catch(error => console.log('error from handleDownload =>', error ))
+      .catch(error => {
+        console.log('error from handleDownload =>', error )
+        setDownloading(undefined)
+      })
   }
 
   const { channelOwnerPic, title, channelTitle, viewCount, publishTime } = video
@@ -96,7 +100,7 @@ const VideoInfo = ({ video, ctx, watchLaterFlag, savedVideosFlag }: InfoProps ) 
           />
           { isComponentVisible && 
             <div className='menu'>
-              { watchLaterFlag || savedVideosFlag?
+              { watchLaterFlag || savedVideosFlag ?
                   <p onClick={removeVid}>Remove</p>
                   :
                   <p onClick={saveForLater}>Watch Later</p>

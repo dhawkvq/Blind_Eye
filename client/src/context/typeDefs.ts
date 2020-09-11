@@ -11,6 +11,11 @@ export type NotifState = {
   message: string
 }
 
+export type DownloadState = {
+  videoId: string;
+  downloadPercent?: number
+}
+
 export type ContextTypes = {
   savedVideos: Video[];
   hotReel: Video[];
@@ -26,4 +31,6 @@ export type ContextTypes = {
   loading: boolean;
   notification: NotifState|undefined;
   setNotification: React.Dispatch<React.SetStateAction<NotifState|undefined>>;
+  downloading: DownloadState|undefined;
+  setDownloading: React.Dispatch<React.SetStateAction<DownloadState|undefined>>;
 }

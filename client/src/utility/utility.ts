@@ -9,6 +9,7 @@ import {
   Thumbnail, 
   ChanOwnerRes 
 } from './typeDefs'
+import { DownloadState } from '../context/typeDefs'
 import { popularList } from '../mock_data'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
@@ -212,7 +213,8 @@ export const fetchInfo = async (nextPage?:string): Promise<InfoReturn> => {
   }
 }
 
-export const downloadVideo = async (id:string) => {
+
+export const downloadVideo = async (id:string, cb: React.Dispatch<React.SetStateAction<DownloadState|undefined>>) => {
   try{
 
     const stream = await fetch(`api/stream/${id}`)
@@ -221,28 +223,33 @@ export const downloadVideo = async (id:string) => {
     if(stream && stream.body){
       const reader = stream.body.getReader();
 
-      let contentLength
+      let contentLength = 0
 
       if(stream.headers){
-        console.log('stream headers =>', stream.headers)
-        contentLength = stream.headers.get('Content-Length')
+        let length = stream.headers.get('Content-Length')
+        if(length){
+          contentLength = +length
+        }
       }
 
       let receivedLength = 0
       let chunks: Uint8Array[] = []
       while(true) {
-        const {done, value} = await reader.read();
+        const {done, value } = await reader.read();
 
         if (done) break
 
         if(value){
           chunks.push(value)
           receivedLength += value.length;
-        }else{
-          break
+
+          // claiming reference to receievedLength variable to be unsafe. Have to look into this
+          // eslint-disable-next-line
+          cb(prevState => 
+              Object.assign({},prevState,{ downloadPercent: receivedLength/contentLength * 100 })
+            )
         }
 
-        console.log(`Received ${receivedLength} of ${contentLength}`)
       }
 
       return new Blob(chunks)

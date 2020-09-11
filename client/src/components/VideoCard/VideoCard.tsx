@@ -6,6 +6,7 @@ import { formatDuration, Video } from '../../utility'
 import { ContextTypes } from '../../context/typeDefs'
 import { useLocation } from 'react-router-dom'
 import NotificationBar from '../NotificationBar/NotificationBar'
+import ProgressBar from './components/ProgressBar'
 
 
 type VidCardProps = {
@@ -28,9 +29,13 @@ const VideoCard = ({ video, ctx, watchLaterFlag, savedVideosFlag }: VidCardProps
 
   let showMessage = ctx.notification && ctx.notification.id === video.id
   let message = ctx.notification && ctx.notification.message
+  let showDownloadProgress = ctx.downloading?.videoId === video.id
 
   return(
     <div key={video.id} className='cardWrapper'> 
+      { showDownloadProgress &&
+        <ProgressBar progPercent={ctx.downloading?.downloadPercent}/>
+      }
       {
         showMessage && 
         <NotificationBar 

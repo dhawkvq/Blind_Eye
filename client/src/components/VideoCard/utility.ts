@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import { db, WLDB } from '../../config'
 import { Video, downloadVideo } from '../../utility'
+import { DownloadState } from '../../context/typeDefs'
 dayjs.extend(duration)
 
 
@@ -63,9 +64,9 @@ export const deleteFromDB = async ({ database, id }: DeleteArgs) => {
   catch(error){ throw error }
 }
 
-export const downloadVid = async (video:Video): Promise<Video> => {
+export const downloadVid = async (video:Video, cb: React.Dispatch<React.SetStateAction<DownloadState|undefined>> ): Promise<Video> => {
   try{
-    const vidData = await downloadVideo(video.id)
+    const vidData = await downloadVideo(video.id, cb)
     if (!vidData) throw new Error('video came back undefined')
     const newVid = {
       _id: video.id,
