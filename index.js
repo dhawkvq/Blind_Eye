@@ -20,7 +20,9 @@ app.get('/api/stream/:id', (req,res) => {
     return res.status(400).send({ error: 'invalid youtube id' })
   }
   
-  ytdl(`http://www.youtube.com/watch?v=${id}`).pipe(res)
+  ytdl(`http://www.youtube.com/watch?v=${id}`)
+    .on('response', ({ headers }) => res.setHeader('Content-Length', headers['content-length'] ))
+    .pipe(res)
   
 })
 
