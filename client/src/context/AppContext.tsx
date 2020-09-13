@@ -4,9 +4,10 @@ import {
   grabDB, 
   Video,
   fetchInfo,
-  inDevelopment
+  inDevelopment,
+  getStorageInfo
 } from '../utility'
-import{ TransitionState, ContextTypes, NotifState, DownloadState } from './typeDefs'
+import { TransitionState, ContextTypes, NotifState, DownloadState } from './typeDefs'
 
 
 export const AppCtx = React.createContext<ContextTypes | undefined>(undefined)
@@ -22,6 +23,7 @@ const AppContext = (props) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [notification, setNotification] = useState<NotifState|undefined>()
   const [downloading, setDownloading] = useState<DownloadState|undefined>()
+  const [storageUsed, setStorageUsed] = useState<number|undefined>()
 
   useEffect(() => {
     fetchInfo()
@@ -39,8 +41,11 @@ const AppContext = (props) => {
       .then(setWatchLater)  
       .catch(error => console.log(error))
 
-  }, [])
+    getStorageInfo(navigator)
+      .then(setStorageUsed)
+      .catch(error => console.log('error from setting storage =>', error ))
 
+  }, [])
 
   let history = useHistory()
 
@@ -90,7 +95,8 @@ const AppContext = (props) => {
         handleNextPage, handleRouteChange,
         contentEnded, loading,
         notification, setNotification,
-        downloading, setDownloading
+        downloading, setDownloading,
+        storageUsed
       }}
     >
       { props.children }

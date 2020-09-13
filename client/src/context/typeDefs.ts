@@ -33,4 +33,5 @@ export type ContextTypes = {
   setNotification: React.Dispatch<React.SetStateAction<NotifState|undefined>>;
   downloading: DownloadState|undefined;
   setDownloading: React.Dispatch<React.SetStateAction<DownloadState|undefined>>;
+  storageUsed: number|undefined;
 }

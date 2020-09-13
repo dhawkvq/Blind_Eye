@@ -58,15 +58,13 @@ export const createEndpoint = (action: Action): string => {
 }
 
 
-export const getStorageInfo = async (navigator: Navigator): Promise<void> => {
+export const getStorageInfo = async (navigator: Navigator): Promise<number> => {
   if(!navigator) throw new Error('user agent navigator must be passed to grab storage info')
   try {
     const { usage, quota } = await navigator.storage.estimate();
     if(!usage || !quota) throw new Error('failed to estimate storage')
-    const percentageUsed = (usage / quota) * 100;
-    console.log(`You've used ${percentageUsed}% of the available storage.`);
-    const remaining = quota - usage;
-    console.log(`You can write up to ${remaining} more bytes.`);
+    const percentage = (usage / quota) * 100 
+    return percentage > 1 ? percentage : 1
   }
   catch(error){
     throw error
