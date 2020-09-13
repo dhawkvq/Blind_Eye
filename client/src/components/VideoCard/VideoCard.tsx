@@ -6,7 +6,7 @@ import { formatDuration, Video } from '../../utility'
 import { ContextTypes } from '../../context/typeDefs'
 import { useLocation } from 'react-router-dom'
 import NotificationBar from '../NotificationBar/NotificationBar'
-import ProgressBar from './components/ProgressBar'
+import { ProgressBar } from '../../components'
 
 
 type VidCardProps = {

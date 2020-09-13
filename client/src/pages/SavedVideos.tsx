@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import './pageStyles.scss'
 import { AppCtx } from '../context'
-import { VideoCard, NoVideoNotif } from '../components'
+import { VideoCard, NoVideoNotif, ProgressBar } from '../components'
 
 
 const SavedVideos = () => {
@@ -11,9 +11,10 @@ const SavedVideos = () => {
   if(appCtx){
 
     const { 
-      savedVideos = [], 
+      savedVideos, 
       transitionComp: { fromComp },
-      handleRouteChange
+      handleRouteChange,
+      storageUsed
     } = appCtx
 
     let wrapperClass = 
@@ -24,14 +25,26 @@ const SavedVideos = () => {
     
     return (
       <div className={wrapperClass} onAnimationEnd={handleRouteChange}>
-        { savedVideos.length > 0 ? savedVideos.map(video => (
-            <VideoCard 
-              key={video.id} 
-              ctx={appCtx}
-              video={video}
-              savedVideosFlag
-            />
-          ))
+        { savedVideos.length > 0 ?
+          <>
+            <div className='progWrapper'>
+              <p id='heading'> Storage Details </p>
+              <ProgressBar 
+                progPercent={storageUsed} 
+                message={`${storageUsed}% of storage used`}          
+              /> 
+            </div>
+            {
+              savedVideos.map(video => (
+                <VideoCard 
+                  key={video.id} 
+                  ctx={appCtx}
+                  video={video}
+                  savedVideosFlag
+                />
+              ))
+            }
+          </>
           :
           <NoVideoNotif message='You currently have no saved videos'/>
         }

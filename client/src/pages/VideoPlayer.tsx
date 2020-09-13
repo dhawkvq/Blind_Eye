@@ -32,7 +32,7 @@ const VideoPlayer = ({ match, history, location }) => {
 
     const { fromComp, data } = location.state
 
-    if(fromComp === 'my-vids'){
+    if(fromComp === '/my-vids'){
       grabParams()
     } else if(data){
       setVideoInfo(data)
@@ -55,11 +55,11 @@ const VideoPlayer = ({ match, history, location }) => {
     let conClass = fromComp?.slice(0,12) === '/watch-video' ? 'wrapper transition': 'wrapper'
 
     let vidTitle = videoInfo ? videoInfo.title : 'loading'
-
+    
     return (
       <div className={conClass} onAnimationEnd={handleRouteChange}>
         <div className='vidCon'>
-          { videoUrl && history.location.state.fromComp !== '/my-vids' ?
+          { videoUrl && history.location.state.fromComp === '/my-vids' ?
               <video ref={vidRef} 
                 autoPlay
                 controls 
@@ -69,13 +69,13 @@ const VideoPlayer = ({ match, history, location }) => {
                 <source src={videoUrl}/>
               </video>
             :
-            // ts throws error for allowfullscreen option in iframe
-            // @ts-ignore
-            <iframe 
-              src={`http://www.youtube.com/embed/${match.params.id}`} 
-              title={vidTitle}
-              allowFullScreen={true}
-            ></iframe>
+              // ts throws error for allowfullscreen option in iframe
+              // @ts-ignore
+              <iframe 
+                src={`http://www.youtube.com/embed/${match.params.id}`} 
+                title={vidTitle}
+                allowFullScreen={true}
+              ></iframe>
           }
           {
             videoInfo && 

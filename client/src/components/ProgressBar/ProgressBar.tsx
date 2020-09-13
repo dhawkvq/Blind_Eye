@@ -1,10 +1,15 @@
 import React from 'react'
 import './progBarStyles.scss'
 
-const ProgressBar = ({ progPercent = 1 }:{ progPercent?: number}) => {
+type BarProps = {
+  progPercent?: number;
+  message?: string;
+}
+
+const ProgressBar = ({ progPercent = 1, message = 'Downloading...' }: BarProps ) => {
   return (
     <div className='progBar'>
-      <p>Downloading....</p>
+      <p>{message}</p>
       <div style={{ width: `${progPercent}%`}} />
     </div>
   )

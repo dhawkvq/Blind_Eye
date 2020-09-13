@@ -20,7 +20,7 @@ const VideoInfo = ({ video, ctx, watchLaterFlag, savedVideosFlag }: InfoProps ) 
 
   const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false)
 
-  const { setSavedVids, setWatchLater, setNotification, setDownloading } = ctx
+  const { setSavedVids, setWatchLater, setNotification, downloading, setDownloading } = ctx
 
   const saveForLater = () => { 
     storeInDB(video)
@@ -58,6 +58,8 @@ const VideoInfo = ({ video, ctx, watchLaterFlag, savedVideosFlag }: InfoProps ) 
   }
 
   const handleDownload = () => {
+
+    if(downloading) return
 
     setIsComponentVisible(false)
 
