@@ -10,11 +10,10 @@ const HotReel = () => {
 
   useEffect(() => {
     if(appCtx){
-      
-      const { handleNextPage } = appCtx
+      const { handleNextPage, loading } = appCtx
 
       const handleScroll = () => {
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && !loading) {
           handleNextPage()
         }
       }
@@ -32,7 +31,7 @@ const HotReel = () => {
       hotReel = [], 
       transitionComp: { fromComp }, 
       handleRouteChange,
-      contentEnded,
+      nextPage,
       loading
     } = appCtx
 
@@ -42,7 +41,7 @@ const HotReel = () => {
       hotReel.length > 1 ? 'wrapper full':
       'wrapper'
 
-    let notify = loading || contentEnded
+    let notify = loading || !nextPage
 
     return (
       <div className={wrapperClass} onAnimationEnd={handleRouteChange}>

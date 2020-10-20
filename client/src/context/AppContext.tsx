@@ -19,7 +19,6 @@ const AppContext = (props) => {
   const [watchLater, setWatchLater] = useState<Video[]>([])
   const [transitionComp, setTransitionComp] = useState<TransitionState>({}) 
   const [nextPage, setNextPage] = useState<string|undefined>()
-  const [contentEnded, setContentEnded] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
   const [notification, setNotification] = useState<NotifState|undefined>()
   const [downloading, setDownloading] = useState<DownloadState|undefined>()
@@ -67,7 +66,7 @@ const AppContext = (props) => {
       return
     }
 
-    if(contentEnded || !nextPage) return 
+    if(!nextPage) return 
 
     setLoading(true)
 
@@ -75,7 +74,6 @@ const AppContext = (props) => {
       .then(({ fullVidInfo, nextPageToken }) => {
         setHotReel(prevState => [...prevState,...fullVidInfo])
         setNextPage(nextPageToken)
-        setContentEnded(true)
         setLoading(false)
       })
       .catch(error => {
@@ -92,8 +90,8 @@ const AppContext = (props) => {
         hotReel, setHotReel, 
         watchLater, setWatchLater,
         transitionComp, setTransitionComp,
-        handleNextPage, handleRouteChange,
-        contentEnded, loading,
+        handleNextPage, nextPage,
+        handleRouteChange, loading,
         notification, setNotification,
         downloading, setDownloading,
         storageUsed

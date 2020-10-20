@@ -26,7 +26,8 @@ const {
   NODE_ENV
 } = process.env
 
-export const inDevelopment = NODE_ENV === 'development'
+// export const inDevelopment = NODE_ENV === 'development'
+export const inDevelopment = false
 
 
 export const createEndpoint = (action: Action): string => {
@@ -211,8 +212,11 @@ export const fetchInfo = async (nextPage?:string): Promise<InfoReturn> => {
   }
 }
 
+export const downloadVideo = async (
+  id:string, 
+  cb: React.Dispatch<React.SetStateAction<DownloadState|undefined>>
+  ) => {
 
-export const downloadVideo = async (id:string, cb: React.Dispatch<React.SetStateAction<DownloadState|undefined>>) => {
   try{
 
     const stream = await fetch(`api/stream/${id}`)

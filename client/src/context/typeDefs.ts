@@ -25,9 +25,9 @@ export type ContextTypes = {
   setSavedVids: React.Dispatch<React.SetStateAction<Video[]>>;
   setHotReel: React.Dispatch<React.SetStateAction<Video[]>>;
   setWatchLater: React.Dispatch<React.SetStateAction<Video[]>>;
+  nextPage: string|undefined
   handleNextPage: () => void;
   handleRouteChange: ({ animationName }:{ animationName: string }) => void;
-  contentEnded: boolean;
   loading: boolean;
   notification: NotifState|undefined;
   setNotification: React.Dispatch<React.SetStateAction<NotifState|undefined>>;
